@@ -1,0 +1,17 @@
+.grad-text-1 {
+    background: linear-gradient(180deg, #6D28D9 0%, #D939CD 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+::-webkit-scrollbar {
+    width: 0.4em;
+    max-height: 0.2rem;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background-color: var(--avanda-grey-dark);
+  border-radius: 20px;
+}
