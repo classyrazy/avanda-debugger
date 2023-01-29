@@ -1,7 +1,7 @@
 <template>
     <div>
         <tree v-for="(item, idx) in treeItems" :items="item" :key="idx" ></tree>
-
+        
     </div>
 </template>
 
@@ -9,7 +9,7 @@
 import Tree from './tree.vue'
 type TreeItem = {
     name: string,
-    children: TreeItem[]
+    children: TreeItem[],
 }
 interface Props {
     treeItems: TreeItem[]

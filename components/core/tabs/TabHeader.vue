@@ -1,9 +1,9 @@
 <template>
-    <div class="border-r border-l inline-block py-1 px-2 flex items-center gap-4 cursor-pointer">
+    <div class="border-r border-l inline-block py-1 px-2 flex items-center gap-4 cursor-pointer" :class="currentTabId == id ? 'border-t-4 border-t-main-purple':''" @click="useRouter().push({query:{t: `${id}`}})">
         <div class="flex items-center gap-2">
-            <span class="text-get-request-green text-md font-semibold">GET</span>
+            <span class="text-md font-semibold" :class="`text-${computedRequestType?.color}`">{{computedRequestType?.name}}</span>
             <span class="text-xl">·</span>
-            <span class="text-md font-medium">ServiceNameOne</span>
+            <span class="text-md font-medium">{{name}}</span>
         </div>
         <div class="w-5 h-5 flex justify-center items-center cursor-pointer hover:bg-gray-200 rounded-md">
             <close-icon :size="16"></close-icon>
@@ -15,20 +15,23 @@
 import CloseIcon from '../../icons/close-icon.vue'
 import requestType from "~/utils/types/requestType"
 interface TabProps {
-    title: string;
+    id: string;
+    name: string;
     requestType: requestType;
-    active: boolean;
+    newTab: boolean;
 }
 
 const props = defineProps<TabProps>()
-const active = ref(props.active)
 let computedRequestType = computed(() => {
     switch (props.requestType) {
         case "get":
-            return "GET"
+            return {name: "GET", color: "get-request-green"}
         case "post":
-            return "POST"
+            return {name: "POST", color: "post-request-yellow"}
     }
+})
+const currentTabId = computed(() => {
+    return useRoute().query.t
 })
 </script>
 

@@ -13,6 +13,7 @@ interface Props {
         id?: number;
         name: string;
         children?: object[]
+        isFolderEmpty?: boolean
     };
 }
 let props = defineProps<Props>();

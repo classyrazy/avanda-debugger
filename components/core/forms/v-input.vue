@@ -73,10 +73,11 @@ export default {
             'search': "",
             "modal-search": "bg-[#fff] dark:bg-db text-black focus:border-pry border-b-0 border-gray-100 p-0 pb-1",
             "avanda-grey-input": "bg-transparent border-none bg-black",
+            "avanda-create-file-input": "bg-transparent border border-gray-100 p-1",
         };
         let base = "";
         let sizes = {
-            small: "py-2 px-2",
+            small: "",
             "x-small": "p-1",
             medium: "p-3",
             big: "py-6 px-8",
