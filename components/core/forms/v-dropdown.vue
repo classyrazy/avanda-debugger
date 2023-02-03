@@ -1,6 +1,6 @@
 <template>
     <div class="dropdown-container mx-auto relative" tabindex="0" @keydown.enter="handleDropdown()"
-        @keydown.esc="closeDropDown()" :class="[dcConStyles]">
+        @keydown.esc="closeDropDown()" :class="[dcConStyles]" v-click-outside="closeDropDown">
         <div class=" dropdown-toggle-contaner click-dropdown flex justify-between items-center  cursor-pointer"
             @click="handleDropdown()"
             :class="[error ? 'border-red-100' : '', useDefaultStyles ? 'border-gray-100 border-2 rounded-lg p-2' : dcToggleStyles]">
@@ -10,7 +10,7 @@
             </span>
             <down-icon></down-icon>
         </div>
-        <div class="absolute top-12 w-full z-10">
+        <div class="absolute top-6 w-full z-10">
             <div class="dropdown-menu w-full border-gray-100 border-2 mt-2 rounded-lg p-2 bg-white "
                 :class="[computedDropState ? 'block' : 'hidden', dMenuStyles]">
                 <slot></slot>
@@ -87,12 +87,14 @@ export default {
         },
         closeDropDown() {
             this.dropStateProps = false
+            this.$emit("closeDropdown")
+
         },
         searchDropdown() {
             this.$emit('search', this.searchValue)
         },
         chooseItem() {
-            this.$emit('onCloseDropdown')
+            this.$emit('chosen')
             this.closeDropDown()
         }
     }

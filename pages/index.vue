@@ -1,34 +1,34 @@
 <template>
-  <div>
-    <request-input></request-input>
-    <div
-      class="params-and-request-options requestoption flex gap-8 px-8 text-avanda-grey-dark font-medium text-sm nav-links">
-      <p class="cursor-pointer nav-link active">Params</p>
-      <p class="cursor-pointer nav-link">Authorization</p>
-      <p class="cursor-pointer nav-link">Body</p>
-      <p class="cursor-pointer nav-link">Nested Function</p>
-    </div>
-    <v-tooltip label="Helloooooo world">
-      <div class="">
-        <p class="">Helloo</p>
-        <p class="">Helloo</p>
-        <p class="">Helloo</p>
-      </div>
-    </v-tooltip>
-    <lazy-core-request-u-i-params-param-edit />
-    Helllo -------{{ storeData.currentFolderId }}
-
+  <div class="">
+    <keep-alive>
+			<component :is="computedCurrentTabDisplayed" />
+		</keep-alive>
   </div>
 </template>
 <script setup lang="ts">
+import MainRequest from '../components/core/requestUI/MainRequest.vue'
+import NewRequest from '../components/core/requestUI/NewRequest.vue'
 import VTooltip from '../components/core/forms/v-tooltip.vue'
 import RequestInput from '../components/core/requestUI/RequestInput.vue'
-import { useAppStore } from "~~/store/app"; 
+import { useAppStore } from "~~/store/app";
+
 const storeData = useAppStore();
 definePageMeta({
   layout: 'main-layout'
 })
-// const { currentFolderId, computedCurrentFolder } = storeData
+
+let isNewReq = ref(false)
+console.log('hello world', useRoute().query.t)
+const computedCurrentTabDisplayed = computed(() => {
+  let regex = new RegExp(`new-\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}`)
+  if (regex.test(useRoute().query?.t)) {
+    isNewReq.value = true
+  }else{
+    isNewReq.value = false
+  }
+  return isNewReq.value ? NewRequest : MainRequest
+})
+
 
 onMounted(() => {
   console.log('mounted')
@@ -40,13 +40,13 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.requestoption p.nav-link {
+.requestoption li.nav-link {
   display: inline-block;
   position: relative;
   /* margin: auto; */
 }
 
-.requestoption p.nav-link::after {
+.requestoption li.nav-link::after {
   content: "";
   position: absolute;
   width: 100%;
@@ -57,11 +57,11 @@ onMounted(() => {
   bottom: -2px;
   left: 0;
   background: #f9b700;
-  /* transform-origin: bottom center; */
+  transform-origin: bottom center;
   transition: transform 0.4s ease-out;
 }
 
-.requestoption p.nav-link.active:after {
+.requestoption li.nav-link.active:after {
   transform: scaleX(1);
   transform-origin: bottom center;
 }

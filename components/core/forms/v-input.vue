@@ -2,7 +2,6 @@
     <div :class="full ? 'w-full' : ''">
         <label v-if="label" class="font-inter text-xl mb-2">{{ label }}</label>
         <div class="relative py-1">
-            <Username class="absolute inset-y-0 left-0 flex items-center justify-center" />
             <input v-bind="$attrs" :class="[__class, iconLeft ? 'pl-10' : '',]" :type="type" v-model="value.value"
                 class="inline-block appearance-none"
                 @keyup="$emit('customChange', value.value)" />
@@ -74,6 +73,7 @@ export default {
             "modal-search": "bg-[#fff] dark:bg-db text-black focus:border-pry border-b-0 border-gray-100 p-0 pb-1",
             "avanda-grey-input": "bg-transparent border-none bg-black",
             "avanda-create-file-input": "bg-transparent border border-gray-100 p-1",
+            "avanda-create-file-name-input": "bg-avanda-grey border border-gray-100 p-1 ",
         };
         let base = "";
         let sizes = {

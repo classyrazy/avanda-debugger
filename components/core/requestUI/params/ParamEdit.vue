@@ -1,28 +1,34 @@
 <template>
-    <div>
-        <h3 class="text-md">Query Params</h3>
-        <p class="text-sm">List of data you want to select from the response</p>
+    <div class="pt-6">
+        <h3 class="text-md font-semibold text-avanda-grey-dark mb-3">Query Params</h3>
         <div class="param-table border-t border-b">
             <div class="">
-                <ul class="grid grid-cols-3 justify-around gap-4 border-r border-b border-l mx-8 px-4 ">
-                    <li>
-                        <p class="border-r text-avanda-grey-dark font-semibold">Key</p>
-                    </li>
-                    <li>
-                        <p class="border-r text-avanda-grey-dark font-semibold">Value</p>
-                    </li>
-                    <li>
-                        <p class="text-avanda-grey-dark font-semibold">Description</p>
-                    </li>
-                </ul>
-                <ul class="grid grid-cols-3 justify-around gap-4 border-r border-b border-l mx-8 px-4 ">
-                    <li class="border-r"><v-input placeholder="Key" class="text-sm" type="text" size="small" full
-                            style-type="avanda-grey-input"></v-input></li>
-                    <li class="border-r"><v-input placeholder="Value" class="text-sm" type="text" size="small" full
-                            style-type="avanda-grey-input"></v-input></li>
-                    <li class=""><v-input placeholder="Description" class="text-sm" type="text" size="small" full
-                            style-type="avanda-grey-input"></v-input></li>
-                </ul>
+                <div class="border-b">
+                    <ul class="grid grid-cols-3 justify-around gap-4 border-r border-l mx-8 ml-10 px-2 ">
+                        <li class="py-2 border-r">
+                            <p class=" text-avanda-grey-dark font-semibold uppercase">Key</p>
+                        </li>
+                        <li class="py-2 border-r">
+                            <p class="text-avanda-grey-dark font-semibold uppercase">Value</p>
+                        </li>
+                        <li class="py-2">
+                            <p class="text-avanda-grey-dark font-semibold uppercase">Description</p>
+                        </li>
+                    </ul>
+                </div>
+                <div class="relative">
+                    <div class="absolute left-[0] top-4">
+                        <input type="checkbox" class="accent-black w-[20px] h-[16px] ml-4">
+                    </div>
+                    <ul class="grid grid-cols-3 justify-around gap-4 border-r  border-l mx-8 ml-10 px-2">
+                        <li class="border-r py-2"><v-input placeholder="Key" class="text-sm" type="text" size="small"
+                                full style-type="avanda-grey-input"></v-input></li>
+                        <li class="border-r py-2"><v-input placeholder="Value" class="text-sm" type="text" size="small"
+                                full style-type="avanda-grey-input"></v-input></li>
+                        <li class="py-2"><v-input placeholder="Description" class="text-sm" type="text" size="small"
+                                full style-type="avanda-grey-input"></v-input></li>
+                    </ul>
+                </div>
 
             </div>
         </div>

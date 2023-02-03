@@ -15,3 +15,9 @@
   background-color: var(--avanda-grey-dark);
   border-radius: 20px;
 }
+.text-post{
+  color: var(--post-request-yellow);
+}
+.text-get{
+  color: var(--get-request-green);
+}

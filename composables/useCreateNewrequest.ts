@@ -1,83 +1,54 @@
 import requestType from "@/utils/types/requestType";
 import { stringify, v4 as uuidv4 } from 'uuid'
-
+import { useAppStore } from "~~/store/app"
+import { useRequestStore } from "~~/store/request"
+import TreeItem from "~~/utils/types/TreeItem";
+import RequestTabheadeType  from "~~/utils/types/requestTabHeadertype";
+import { useHandleFolder } from "./useHandleFolder";
 export const useCreateNewRequest = () => {
-    // {
-    //     name: "folde`r 1",
-    //     children: [
-    //         {
-    //             name: "sub-folder 1",
-    //             children: [
-    //                 { name: "sub-sub-folder 1" },
-    //                 { name: "sub-sub-folder 2" }
-    //             ]
-    //         },
-    //         { name: "sub-folder 2" }
-    //     ]
-    // },
-    type Request = {
-        type: requestType,
-        body: object,
-        headers: object,
-        response: object,
-        id: string,
-        name: string,
-
-    }
+    const storeData = useAppStore()
+    const requestStore = useRequestStore()
+    const { findFolderById } = useHandleFolder()
     const appData = reactive({
         currentTab: ""
     })
-    let tree = reactive([
-        {
-            name: "Authentication",
-            children: [
-                {
-                    name: "Signup",
-                    children: [
-                        { name: "Signup Admin" },
-                        { name: "Signup User" }
-                    ]
-                },
-                { name: "Login", children: [{ name: "Login Admin" }, { name: "Login User", }] }
-            ]
-        }
-    ])
-    const requests = reactive<Request[]>([
-        {
-            type: "get",
-            name: "request 1",
-            body: {},
-            headers: {},
-            response: {},
-            id: "jikfkf",
-        },
-        {
-            type: "post",
-            name: "request 2",
-            body: {},
-            headers: {},
-            response: {},
-            id: "jikffhjdkfbjdfdbkf",
-        },
 
-    ]);
-    const newRequests = reactive<Request[]>([])
-    const createNewRequest = (name: string, type: requestType) => {
+    const createNewRequest = (name: string, type: requestType, whereId: string) => {
         const requestId = uuidv4()
-        newRequests.push({
+        let reqHeaderObj: RequestTabheadeType
+        reqHeaderObj = {
             type: type,
-            name: name,
-            body: {
-                details: "body details"
-            },
-            headers: {},
-            response: {},
-            id: `new-${requestId}`
-
-        })
-        console.log({requests, newRequests})
-
+            name: '',
+            fileName: name,
+            id: `new-${requestId}`,
+        }
+        requestStore.addToNewRequestHeaderTabs(reqHeaderObj)
+        useRouter().push({ query: { t: `new-${requestId}` } })
+        console.log(requestStore.requestsHeaderTabs, requestStore.newRequestHeaderstab)
 
     }
-    return { tree, createNewRequest, requests,newRequests }
+    const addRequestTabHeader = (id: string) => {
+        const requestFetchToAdd: TreeItem = findFolderById(id, storeData.allFolders)
+        if (requestFetchToAdd)
+            if (!checkIfRequestheaderExist(id, requestStore.requestsHeaderTabs)) {
+                requestStore.addToRequestHeaderTabs({
+                    type: requestFetchToAdd.req_type ?? "get",
+                    fileName: requestFetchToAdd.fileName ?? 'New Folder',
+                    name: requestFetchToAdd.name ?? '',
+                    id: requestFetchToAdd.id ?? '',
+                    current_req_tab_model: "params"
+                })
+                console.log(requestStore.requestsHeaderTabs, requestStore.newRequestHeaderstab)
+            }
+
+    }
+    const checkIfRequestheaderExist = (id: string, reqTabsArr: RequestTabheadeType[]) => {
+        const request = reqTabsArr.find((req) => req.id === id)
+        if (request) {
+            return true
+        } else {
+            return false
+        }
+    }
+    return { createNewRequest, addRequestTabHeader }
 }

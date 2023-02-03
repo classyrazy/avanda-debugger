@@ -19,12 +19,12 @@
                 </div>
                 <form @submit.prevent="createFolderOrRequest(createType)">
                     <v-input :placeholder="`New ${createType}`" v-if="displayCreateFolderOrRequestInput"
-                        v-click-outside="closeCreateInput" :value="fileName" class="text-sm rounded-sm" type="text" size="small" full
+                        v-click-outside="closeCreateInput" :value="fileName" class="text-sm rounded-sm" autofocus type="text" size="small" full
                         style-type="avanda-create-file-input"></v-input>
                 </form>
             </div>
             <div class="max-h-[80vh] h-[80vh] overflow-y-auto">
-                <side-tree :tree-items="testTree"></side-tree>
+                <side-tree :tree-items="storeData.allFolders"></side-tree>
             </div>
         </div>
     </div>
@@ -36,11 +36,15 @@ import SideTree from './SidebarTree/SideTree.vue'
 import AddRequestIcon from '../icons/add-request-icon.vue'
 import AddCollectionIcon from '../icons/add-collection-icon.vue'
 import { useHandleFolder } from '~~/composables/useHandleFolder';
+import { useAppStore } from "~~/store/app";
+
 const { allFolders: testTree, createNewFolderOrRequest } = useHandleFolder()
 
 type createType = "folder" | "request"
 let createType = ref<createType>("folder")
 let displayCreateFolderOrRequestInput = ref(false)
+const storeData = useAppStore();
+
 const handleNewParentFolder = () => {
     toggleOpenInput()
     createType.value = "folder"

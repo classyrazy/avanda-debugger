@@ -1,21 +1,115 @@
 import { defineStore } from "pinia";
-import {useHandleFolder} from "~~/composables/useHandleFolder"
+import { useHandleFolder } from "~~/composables/useHandleFolder"
+import { useCreateNewRequest } from "~~/composables/useCreateNewrequest";
+import TreeItem from '~~/utils/types/TreeItem';
+import { v4 as uuidv4 } from 'uuid'
+import { fileStruct } from "~~/utils/types/fileStruct";
+
 const store = () => {
     const currentFolderId = ref('')
-    const {allFolders, findFolderById} = useHandleFolder()
-    function updateCurrentFolder (id: string) {
-        console.log(findFolderById(id, allFolders), {id})
+    const allFolders = reactive<TreeItem[]>([
+        {
+            id: "hjebjkjsf",
+            name: "Authentication",
+            type: "folder",
+            children: [
+                {
+                    id: "jikfdbkf",
+                    name: "Signup",
+                    children: [
+                        {
+                            id: "jikfkf",
+                            fileName: "Signup Admin",
+                            parentFolderId: "jikfdbkf",
+                            type: "request",
+                            req_type: "post"
+                        },
+                        {
+                            id: "hi",
+                            fileName: "Signup User",
+                            parentFolderId: "jikfdbkf",
+                            type: "request",
+                            req_type: "get"
+                        }
+                    ],
+                    parentFolderId: "hjebjkjsf",
+                    type: "folder"
+
+                },
+                {
+                    id: "omooo",
+                    name: "Login",
+                    children: [
+                        {
+                            id: "yo",
+                            fileName: "Login Admin",
+                            parentFolderId: "omooo",
+                            type: "request",
+                            req_type: "get"
+
+                        },
+                        {
+                            id: "niboo",
+                            fileName: "Login User",
+                            parentFolderId: "omooo",
+                            type: "request",
+                            req_type: "post"
+                        }
+                    ],
+                    parentFolderId: "hjebjkjsf",
+                    type: "folder"
+                }
+            ],
+            parentFolderId: null
+        },
+        {
+            id: "jikffhjdkfbjdfdbkf",
+            fileName: "Login Admin",
+            parentFolderId: null,
+            type: "request",
+            req_type: "post"
+        }
+    ])
+    const { findFolderById } = useHandleFolder()
+    const { addRequestTabHeader } = useCreateNewRequest()
+
+    function updateCurrentFolder(id: string) {
+        console.log(findFolderById(id, allFolders), { id, allFolders })
         currentFolderId.value = id
     }
-    const computedCurrentFolder = computed(() => {
-        if(!currentFolderId.value) return "Root"
+
+    const computedCurrentFolder = computed<TreeItem>(() => {
+        if (!currentFolderId.value) return "Root"
         return findFolderById(currentFolderId.value, allFolders)
 
     })
+    const createFolderOrRequest = (objectTosave: TreeItem, whereId: string = currentFolderId.value, type: fileStruct) => {
+        const folderOrRequestId = uuidv4()
+        if (whereId) {
+            let locationFolder = findFolderById(whereId, allFolders)
+            console.log(locationFolder)
+            locationFolder?.children?.push(objectTosave)
+
+        } else {
+            allFolders.push(objectTosave)
+        }
+        console.log(allFolders)
+        if (type === "folder") {
+            updateCurrentFolder(objectTosave.id ?? '')
+        } else {
+            addRequestTabHeader(objectTosave.id ?? '')
+            useRouter().push({ query: { t: objectTosave.id } })
+        }
+    }
+    const openSideBarRequestAsTab = (id: string) => {
+        useRouter().push({ query: { t: id } })
+    }
     return {
         updateCurrentFolder,
         currentFolderId,
-        computedCurrentFolder
+        computedCurrentFolder,
+        allFolders,
+        createFolderOrRequest
     }
 }
 export const useAppStore = defineStore("app", store)
