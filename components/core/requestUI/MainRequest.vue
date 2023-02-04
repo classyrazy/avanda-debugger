@@ -1,7 +1,7 @@
 <template>
-    <request-input ></request-input>
+    <request-input class="mx-2"></request-input>
     <ul
-        class="params-and-request-options requestoption flex gap-8  text-avanda-grey-dark font-medium text-sm nav-links">
+        class="params-and-request-options requestoption flex gap-8  text-avanda-grey-dark font-medium text-sm nav-links mx-2">
         <li class="cursor-pointer nav-link capitalize" v-for="tab in computedTabNames" :key="tab"
             :class="requestStore.computedCurrentRequestHeader?.current_req_tab_model == tab ? 'active' : ''" @click="handleClickOnInnerTab(tab)">{{ tab }}</li>
     </ul>
