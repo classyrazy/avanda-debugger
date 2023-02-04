@@ -1,5 +1,5 @@
 <template>
-    <request-input></request-input>
+    <request-input ></request-input>
     <ul
         class="params-and-request-options requestoption flex gap-8  text-avanda-grey-dark font-medium text-sm nav-links">
         <li class="cursor-pointer nav-link capitalize" v-for="tab in computedTabNames" :key="tab"

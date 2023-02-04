@@ -1,15 +1,15 @@
 import { defineStore } from "pinia";
 import { useHandleFolder } from "~~/composables/useHandleFolder"
 import TreeItem from '~~/utils/types/TreeItem';
-import RequestTabheadeType  from "~~/utils/types/requestTabHeadertype";
+import RequestTabheadeType from "~~/utils/types/requestTabHeadertype";
 import { requestInnerTabs } from "~~/utils/types/appStyleTypes";
 import { v4 as uuidv4 } from 'uuid'
 import { fileStruct } from "~~/utils/types/fileStruct";
 import requestType from "@/utils/types/requestType";
-
+import { mainRequestType } from "~~/utils/types/mainRequestType";
 
 const store = () => {
-   
+
     const requestsHeaderTabs = reactive<RequestTabheadeType[]>([
         {
             type: "get",
@@ -27,7 +27,108 @@ const store = () => {
         },
 
     ]);
-    const requests = reactive
+    const requests = reactive<mainRequestType[]>([
+        {
+            id: "jikfkf",
+            params: [
+                {
+                    key: "username",
+                    value: "classyrazy",
+                    description: "username param of the user",
+                    active: true
+                }
+            ],
+            headers: [
+                {
+                    key: "Content-Type",
+                    value: "application/json",
+                    description: "content type of the request",
+                    active: true
+                }
+            ],
+            body: [
+                {
+                    key: "username",
+                    value: "classyrazy",
+                    description: "This is the username of the user",
+                    active: true,
+                    file: false
+                },
+                {
+                    key: "profile_picture",
+                    value: "",
+                    description: "This is the profile picture of the user",
+                    active: false,
+                    file: true,
+                    fileName: "profile_picture.png"
+                }
+            ],
+            authorisation:{
+                type: "bearer",
+            },
+            requestData:{
+                type: "get",
+                name: "request-1",
+                functionName: "",
+            },
+             responseData:{
+                type:"json",
+                data: {
+                    test:"hbsfkjbsugfkjbs"
+                }
+             }
+        },
+        {
+            id: "yo",
+            params: [
+                {
+                    key: "username",
+                    value: "classyrazy",
+                    description: "username param of the user",
+                    active: true
+                }
+            ],
+            headers: [
+                {
+                    key: "Content-Type",
+                    value: "application/json",
+                    description: "content type of the request",
+                    active: true
+                }
+            ],
+            body: [
+                {
+                    key: "username",
+                    value: "classyrazy",
+                    description: "This is the username of the user",
+                    active: true,
+                    file: false
+                },
+                {
+                    key: "profile_picture",
+                    value: "",
+                    description: "This is the profile picture of the user",
+                    active: false,
+                    file: true,
+                    fileName: "profile_picture.png"
+                }
+            ],
+            authorisation:{
+                type: "bearer",
+            },
+            requestData:{
+                type: "get",
+                name: "request-1",
+                functionName: "",
+            },
+             responseData:{
+                type:"json",
+                data: {
+                    test:"hbsfkjbsugfkjbs"
+                }
+             }
+        },
+    ])
     const newRequestHeaderstab = reactive<RequestTabheadeType[]>([])
     const currentRequestheaderId = ref('')
     const setcurrentRequestheaderId = (id: string) => {
@@ -51,13 +152,16 @@ const store = () => {
         const index = newRequestHeaderstab.findIndex((request) => request.id === requestId)
         newRequestHeaderstab.splice(index, 1)
     }
-    const changeCurrentRequestTabModel = (tab:requestInnerTabs, requestId: string = currentRequestheaderId.value ) => {
+    const changeCurrentRequestTabModel = (tab: requestInnerTabs, requestId: string = currentRequestheaderId.value) => {
         const request = requestsHeaderTabs.find((request) => request.id === requestId)
         if (request) {
             request.current_req_tab_model = tab
         }
     }
-    return{
+    const computedCurrentMainRequest = computed(() => {
+        return requests.find((request) => request.id === currentRequestheaderId.value)
+    })
+    return {
         requestsHeaderTabs,
         newRequestHeaderstab,
         addToRequestHeaderTabs,
@@ -67,7 +171,9 @@ const store = () => {
         setcurrentRequestheaderId,
         removeRequestFromNewHeaderTabs,
         computedCurrentRequestHeader,
-        changeCurrentRequestTabModel
+        changeCurrentRequestTabModel,
+        requests,
+        computedCurrentMainRequest
     }
 }
 
