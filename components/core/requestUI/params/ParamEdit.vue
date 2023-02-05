@@ -40,22 +40,27 @@ import VInput from '../../forms/v-input.vue'
 import { useRequestStore } from '~~/store/request';
 
 const requestStore = useRequestStore()
-const paramForm = requestStore.computedCurrentMainRequest?.params ?? []
+const paramForm = requestStore.computedCurrentMainRequest?.params ?? [{
+    key: "",
+    value: "",
+    description: "",
+    active: true,
+}]
 const addNewBodyFormWhenOthersAreFull = () => {
     const isAllFull = paramForm.every(eachForm => eachForm.key)
-    console.log({ isAllFull, paramForm })
     if (isAllFull) {
         paramForm.push({
             key: "",
             value: "",
             description: "",
-            active: false,
+            active: true,
         })
     }
 
 }
 onMounted(() => {
     addNewBodyFormWhenOthersAreFull()
+    console.log({ paramForm })
 })
 
 const updateFormData = (data: string, column: [key: string], idx: number) => {
@@ -64,6 +69,9 @@ const updateFormData = (data: string, column: [key: string], idx: number) => {
     addNewBodyFormWhenOthersAreFull()
     console.log({ paramForm })
 }
+// watch(paramForm, (newVal) => {
+//     requestStore.updateCurrentMainRequest({ params: newVal })
+// })
 </script>
 
 <style scoped>

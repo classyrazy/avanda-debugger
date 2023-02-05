@@ -9,23 +9,17 @@ import requestType from "@/utils/types/requestType";
 import { mainRequestType } from "~~/utils/types/mainRequestType";
 
 const store = () => {
-
+    const requestTypeAvailable = reactive<{ name: requestType, color: string }[]>([
+        {
+            name: "get",
+            color: 'get'
+        },
+        {
+            name: "post",
+            color: 'post'
+        },
+    ])
     const requestsHeaderTabs = reactive<RequestTabheadeType[]>([
-        {
-            type: "get",
-            fileName: "request-1",
-            name: '',
-            id: "jikfkf",
-            current_req_tab_model: "authorization"
-        },
-        {
-            type: "post",
-            fileName: "request-2",
-            name: '',
-            id: "jikffhjdkfbjdfdbkf",
-            current_req_tab_model: "body"
-        },
-
     ]);
     const requests = reactive<mainRequestType[]>([
         {
@@ -63,26 +57,26 @@ const store = () => {
                     fileName: "profile_picture.png"
                 }
             ],
-            authorisation:{
+            authorisation: {
                 type: "bearer",
             },
-            requestData:{
+            requestData: {
                 type: "get",
                 name: "request-1",
-                functionName: "",
+                serviceName: "",
             },
-             responseData:{
-                type:"json",
+            responseData: {
+                type: "json",
                 data: {
-                    test:"hbsfkjbsugfkjbs"
+                    test: "hbsfkjbsugfkjbs"
                 }
-             }
+            }
         },
         {
             id: "yo",
             params: [
                 {
-                    key: "username",
+                    key: "yo-usernanr",
                     value: "classyrazy",
                     description: "username param of the user",
                     active: true
@@ -98,7 +92,7 @@ const store = () => {
             ],
             body: [
                 {
-                    key: "username",
+                    key: "yo-test",
                     value: "classyrazy",
                     description: "This is the username of the user",
                     active: true,
@@ -113,20 +107,20 @@ const store = () => {
                     fileName: "profile_picture.png"
                 }
             ],
-            authorisation:{
+            authorisation: {
                 type: "bearer",
             },
-            requestData:{
-                type: "get",
-                name: "request-1",
-                functionName: "",
+            requestData: {
+                type: "post",
+                name: "request-yo",
+                serviceName: "",
             },
-             responseData:{
-                type:"json",
+            responseData: {
+                type: "json",
                 data: {
-                    test:"hbsfkjbsugfkjbs"
+                    test: "hbsfkjbsugfkjbs"
                 }
-             }
+            }
         },
     ])
     const newRequestHeaderstab = reactive<RequestTabheadeType[]>([])
@@ -173,7 +167,8 @@ const store = () => {
         computedCurrentRequestHeader,
         changeCurrentRequestTabModel,
         requests,
-        computedCurrentMainRequest
+        computedCurrentMainRequest,
+        requestTypeAvailable
     }
 }
 

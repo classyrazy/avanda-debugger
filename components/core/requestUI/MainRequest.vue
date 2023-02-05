@@ -1,11 +1,14 @@
 <template>
-    <request-input class="mx-2"></request-input>
-    <ul
-        class="params-and-request-options requestoption flex gap-8  text-avanda-grey-dark font-medium text-sm nav-links mx-2">
-        <li class="cursor-pointer nav-link capitalize" v-for="tab in computedTabNames" :key="tab"
-            :class="requestStore.computedCurrentRequestHeader?.current_req_tab_model == tab ? 'active' : ''" @click="handleClickOnInnerTab(tab)">{{ tab }}</li>
-    </ul>
-    <!-- <v-tooltip label="Helloooooo world">
+    <section>
+        <section class="" v-if="requestStore.requestsHeaderTabs.length !== 0">
+            <request-input class="mx-2"></request-input>
+            <ul
+                class="params-and-request-options requestoption flex gap-8  text-avanda-grey-dark font-medium text-sm nav-links mx-2">
+                <li class="cursor-pointer nav-link capitalize" v-for="tab in computedTabNames" :key="tab"
+                    :class="requestStore.computedCurrentRequestHeader?.current_req_tab_model == tab ? 'active' : ''"
+                    @click="handleClickOnInnerTab(tab)">{{ tab }}</li>
+            </ul>
+            <!-- <v-tooltip label="Helloooooo world">
         <div class="">
             <p class="">Helloo</p>
             <p class="">Helloo</p>
@@ -13,10 +16,16 @@
         </div>
     </v-tooltip>
     <param-edit /> -->
-    <keep-alive>
-        <component :is="innerTabs[requestStore.computedCurrentRequestHeader?.current_req_tab_model ?? 'params']" />
-    </keep-alive>
-    <!-- Helllo -------{{ storeData.currentFolderId }} -->
+            <keep-alive>
+                <component
+                    :is="innerTabs[requestStore.computedCurrentRequestHeader?.current_req_tab_model ?? 'params']" />
+            </keep-alive>
+            Helllo -------{{ requestStore.computedCurrentMainRequest }} -----{{ requestStore.currentRequestheaderId }}
+        </section>
+        <section v-else>
+            Create Or Open a request to start
+        </section>
+    </section>
 </template>
 
 <script setup lang="ts">
@@ -26,7 +35,7 @@ import VTooltip from '../forms/v-tooltip.vue'
 import RequestInput from './RequestInput.vue'
 import { useAppStore } from "~~/store/app";
 import { useRequestStore } from "~~/store/request";
-import {requestInnerTabs} from "~~/utils/types/appStyleTypes"
+import { requestInnerTabs } from "~~/utils/types/appStyleTypes"
 
 const storeData = useAppStore();
 const requestStore = useRequestStore()
@@ -44,12 +53,19 @@ const innerTabs: innerTabs = {
     'body': BodyEdit,
     'nestedFunction': ParamEdit
 }
+
 const computedTabNames = computed(() => {
     return Object.keys(innerTabs)
 })
 const handleClickOnInnerTab = (tab: requestInnerTabs) => {
     requestStore.changeCurrentRequestTabModel(tab)
 }
+// watch(currentTabId, (val) => {
+//     if (val == props.node.id) {
+//         console.log("watching and updating")
+//         storeData.updateCurrentFolder(props.node.parentFolderId ?? '')
+//     }
+// })
 </script>
 
 <style scoped>

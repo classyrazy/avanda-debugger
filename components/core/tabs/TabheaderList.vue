@@ -28,7 +28,6 @@ const requestStore = useRequestStore();
 const storeData = useAppStore();
 
 let {createNewRequest} = useCreateNewRequest()
-
 </script>
 
 <style scoped>

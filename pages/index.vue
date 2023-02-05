@@ -1,8 +1,8 @@
 <template>
   <div class="">
     <keep-alive>
-			<component :is="computedCurrentTabDisplayed" />
-		</keep-alive>
+      <component :is="computedCurrentTabDisplayed" />
+    </keep-alive>
   </div>
 </template>
 <script setup lang="ts">
@@ -11,8 +11,14 @@ import NewRequest from '../components/core/requestUI/NewRequest.vue'
 import VTooltip from '../components/core/forms/v-tooltip.vue'
 import RequestInput from '../components/core/requestUI/RequestInput.vue'
 import { useAppStore } from "~~/store/app";
+import { useRequestStore } from "~~/store/request";
+import { useCreateNewRequest } from '~~/composables/useCreateNewrequest';
+
 
 const storeData = useAppStore();
+const requestStore = useRequestStore()
+const { addRequestTabHeader } = useCreateNewRequest()
+
 definePageMeta({
   layout: 'main-layout'
 })
@@ -23,7 +29,7 @@ const computedCurrentTabDisplayed = computed(() => {
   let regex = new RegExp(`new-\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}`)
   if (regex.test(useRoute().query?.t)) {
     isNewReq.value = true
-  }else{
+  } else {
     isNewReq.value = false
   }
   return isNewReq.value ? NewRequest : MainRequest
@@ -32,6 +38,9 @@ const computedCurrentTabDisplayed = computed(() => {
 
 onMounted(() => {
   console.log('mounted')
+  if (useRoute().query?.t) {
+    addRequestTabHeader(useRoute().query?.t)
+  }
 
 })
 

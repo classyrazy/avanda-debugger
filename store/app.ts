@@ -24,13 +24,6 @@ const store = () => {
                             type: "request",
                             req_type: "post"
                         },
-                        {
-                            id: "hi",
-                            fileName: "Signup User",
-                            parentFolderId: "jikfdbkf",
-                            type: "request",
-                            req_type: "get"
-                        }
                     ],
                     parentFolderId: "hjebjkjsf",
                     type: "folder"
@@ -47,13 +40,6 @@ const store = () => {
                             type: "request",
                             req_type: "get"
 
-                        },
-                        {
-                            id: "niboo",
-                            fileName: "Login User",
-                            parentFolderId: "omooo",
-                            type: "request",
-                            req_type: "post"
                         }
                     ],
                     parentFolderId: "hjebjkjsf",
@@ -61,13 +47,6 @@ const store = () => {
                 }
             ],
             parentFolderId: null
-        },
-        {
-            id: "jikffhjdkfbjdfdbkf",
-            fileName: "Login Admin",
-            parentFolderId: null,
-            type: "request",
-            req_type: "post"
         }
     ])
     const { findFolderById } = useHandleFolder()

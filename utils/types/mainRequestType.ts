@@ -27,7 +27,7 @@ type mainRequestType = {
     requestData: {
         type: requestType
         name: string,
-        functionName: string,
+        serviceName: string,
     },
     responseData:{
         type: string,
