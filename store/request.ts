@@ -155,6 +155,12 @@ const store = () => {
     const computedCurrentMainRequest = computed(() => {
         return requests.find((request) => request.id === currentRequestheaderId.value)
     })
+    const changeRequestTypeOnHeader = (requestToChangeTo : requestType) => {
+        const request = computedCurrentRequestHeader.value
+        if (request) {
+            request.type = requestToChangeTo
+        }
+    }
     return {
         requestsHeaderTabs,
         newRequestHeaderstab,
@@ -168,7 +174,8 @@ const store = () => {
         changeCurrentRequestTabModel,
         requests,
         computedCurrentMainRequest,
-        requestTypeAvailable
+        requestTypeAvailable,
+        changeRequestTypeOnHeader
     }
 }
 

@@ -35,7 +35,8 @@
                         </li>
                         <li class="flex items-center"><v-input placeholder="Description"
                                 class="text-sm text-gray-400 focus:text-black" type="text" size="small" full
-                                style-type="avanda-grey-input" :value="{ value: BodyForm[idx].description }" @custom-change="updateBodyFormData($event, 'description', true, idx)"></v-input>
+                                style-type="avanda-grey-input" :value="{ value: BodyForm[idx].description }"
+                                @custom-change="updateBodyFormData($event, 'description', true, idx)"></v-input>
                         </li>
                     </ul>
                 </div>
@@ -51,14 +52,16 @@ import VInput from '../../forms/v-input.vue'
 import { useRequestStore } from '~~/store/request';
 
 const requestStore = useRequestStore()
-const BodyForm = requestStore.computedCurrentMainRequest?.body ??
-    [{
-        key: "",
-        value: "",
-        description: "",
-        active: true,
-        file: false
-    }]
+const BodyForm = computed(() => {
+    return requestStore.computedCurrentMainRequest?.body ??
+        [{
+            key: "",
+            value: "",
+            description: "",
+            active: true,
+            file: false
+        }]
+})
 const requestKeyTypesAvailable = reactive([
     { text: "file" },
     { text: "text" }
@@ -100,14 +103,14 @@ const handleCloseDropDown = () => {
     requestKeyTypeDropdown.value = false
 }
 const handleKeyTypeUpdate = (data: { text: "file" | "text", idx: number }) => {
-    BodyForm[data.idx].file = data.text === "file" ? true : false
+    BodyForm.value[data.idx].file = data.text === "file" ? true : false
 }
 
 const addNewBodyFormWhenOthersAreFull = () => {
-    const isAllFull = BodyForm.every(eachForm => eachForm.key)
+    const isAllFull = BodyForm.value.every(eachForm => eachForm.key)
     console.log({ isAllFull, BodyForm })
     if (isAllFull) {
-        BodyForm.push({
+        BodyForm.value.push({
             key: "",
             value: "",
             description: "",
@@ -119,9 +122,9 @@ const addNewBodyFormWhenOthersAreFull = () => {
 }
 const updateBodyFormData = (data: { text: string, idx: number } | string, column: [key: string], defaultEmit: boolean = false, idx: number = data.idx) => {
     if (defaultEmit) {
-        BodyForm[idx][column] = data
+        BodyForm.value[idx][column] = data
     } else {
-        BodyForm[data.idx][column] = data.text
+        BodyForm.value[data.idx][column] = data.text
     }
     addNewBodyFormWhenOthersAreFull()
     console.log({ BodyForm })

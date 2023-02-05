@@ -22,7 +22,7 @@ const store = () => {
                             fileName: "Signup Admin",
                             parentFolderId: "jikfdbkf",
                             type: "request",
-                            req_type: "post"
+                            req_type: "get"
                         },
                     ],
                     parentFolderId: "hjebjkjsf",
@@ -38,7 +38,7 @@ const store = () => {
                             fileName: "Login Admin",
                             parentFolderId: "omooo",
                             type: "request",
-                            req_type: "get"
+                            req_type: "post"
 
                         }
                     ],

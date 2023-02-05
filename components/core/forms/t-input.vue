@@ -70,7 +70,7 @@ export default {
             white: "bg-[#fff] text-black focus:border-pry border-2 border-gray-100",
             'search': "",
             "modal-search": "bg-[#fff] dark:bg-db text-black focus:border-pry border-b-0 border-gray-100 p-0 pb-1",
-            "avanda-grey-input": "bg-transparent border-none bg-black",
+            "avanda-grey-input": "bg-transparent border-none ",
             "avanda-create-file-input": "bg-transparent border border-gray-100 p-1",
             "avanda-create-file-name-input": "bg-avanda-grey border border-gray-100 p-1 ",
         };

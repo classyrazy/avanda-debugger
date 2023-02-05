@@ -26,12 +26,17 @@
                     </template>
                 </v-dropdown>
                 <div class="service-input col-span-2 border-r flex items-center">
-                    <v-input placeholder="RequestName" class="text-sm rounded-lg my-auto" type="text" size="small" full
-                        style-type="avanda-grey-input" :value="requestsForms.name" @custom-change="updateFormData($event, 'name')"></v-input>
+                    <!-- <t-input placeholder="RequestName" class="text-sm rounded-lg my-auto" type="text" size="small" full
+                        style-type="avanda-grey-input" :value="requestData.name"
+                        @custom-change="updateFormData($event, 'name')"></t-input> -->
+                    <input placeholder="RequestName"
+                        class="text-sm rounded-lg my-auto bg-transparent border-none inline-block appearance-none"
+                        type="text" v-model="requestData.name">
                 </div>
                 <div class="service-input col-span-4 flex items-center">
-                    <v-input placeholder="Controller/ServiceName" class="text-sm rounded-lg" type="text" size="small"
-                        full style-type="avanda-grey-input" :value="requestsForms.serviceName" @custom-change="updateFormData($event, 'serviceName')"></v-input>
+                    <input placeholder="Controller/ServiceName"
+                        class="text-sm rounded-lg my-auto bg-transparent border-none inline-block appearance-none"
+                        type="text" v-model="requestData.serviceName">
                 </div>
             </div>
             <v-button type="pry" class="w-auto">Send</v-button>
@@ -41,6 +46,7 @@
 </template>
 
 <script setup lang="ts">
+import TInput from '../forms/t-input.vue'
 import VDropdown from '../forms/v-dropdown.vue'
 import VButton from '../forms/v-button.vue'
 import VInput from '../forms/v-input.vue'
@@ -49,17 +55,23 @@ import { useRequestStore } from "~~/store/request";
 import requestType from '~~/utils/types/requestType';
 
 
+// interface Props {
+//     currentrequestTypeProp: requestType
+// }
+// const props = defineProps<Props>()
 const requestStore = useRequestStore()
 const currentRequest = computed(() => requestStore.computedCurrentMainRequest)
 let requestDropdownType = ref(false)
 let serviceLinkDropDownType = ref(false)
-
+// const currentRequestType = ref(props.currentrequestTypeProp ?? 'get')
 const currentRequestType = ref<requestType>(requestStore.computedCurrentMainRequest?.requestData.type ?? 'get')
-const requestData = requestStore.computedCurrentMainRequest?.requestData ?? {
-    type: 'get',
-    name: '',
-    serviceName: ''
-}
+const requestData = computed(() => {
+    return requestStore.computedCurrentMainRequest?.requestData ?? {
+        type: 'get',
+        name: '',
+        serviceName: ''
+    }
+})
 
 
 let requestsAvailable = reactive([
@@ -81,30 +93,33 @@ function handleCloseDropDown() {
 }
 function handleChosenFromDropdown(item: any) {
     currentRequestType.value = item.name
-    requestData.type = item.name
+    requestData.value.type = item.name
+    requestStore.changeRequestTypeOnHeader(item.name)
     handleCloseDropDown()
 }
 const computedRequestBasedOnString = computed(() => {
-    return requestStore.requestTypeAvailable.find((item) => item.name === currentRequestType.value)
+    return requestStore.requestTypeAvailable.find((item) => item.name === requestData.value.type)
 })
 const requestsForms = reactive({
     serviceName: {
-        value: requestData.serviceName,
+        value: requestData.value.serviceName,
         error: null
     },
-    name:{
-        value: requestData.name,
+    name: {
+        value: requestData.value.name,
         error: null
     }
 })
 
 const updateFormData = (data: string, column: [key: string]) => {
-    requestData[column] = data
+    requestData.value[column] = data
     console.log({ requestData })
 }
 
 </script>
 
 <style scoped>
-
+input:focus {
+    outline: none;
+}
 </style>

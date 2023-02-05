@@ -20,7 +20,7 @@
                 <component
                     :is="innerTabs[requestStore.computedCurrentRequestHeader?.current_req_tab_model ?? 'params']" />
             </keep-alive>
-            Helllo -------{{ requestStore.computedCurrentMainRequest }} -----{{ requestStore.currentRequestheaderId }}
+            <!-- Helllo -------{{ requestStore.computedCurrentMainRequest }} -----{{ requestStore.currentRequestheaderId }} -->
         </section>
         <section v-else>
             Create Or Open a request to start

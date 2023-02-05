@@ -22,11 +22,14 @@
                     </div>
                     <ul class="grid grid-cols-3 justify-around gap-4 border-r  border-l mx-8 ml-10 px-2">
                         <li class="border-r py-2"><v-input placeholder="Key" class="text-sm" type="text" size="small"
-                                full style-type="avanda-grey-input" :value="{ value: paramForm[idx].key }" @custom-change="updateFormData($event, 'key', idx)"></v-input></li>
+                                full style-type="avanda-grey-input" :value="{ value: paramForm[idx].key }"
+                                @custom-change="updateFormData($event, 'key', idx)"></v-input></li>
                         <li class="border-r py-2"><v-input placeholder="Value" class="text-sm" type="text" size="small"
-                                full style-type="avanda-grey-input" :value="{ value: paramForm[idx].value }" @custom-change="updateFormData($event, 'value', idx)"></v-input></li>
+                                full style-type="avanda-grey-input" :value="{ value: paramForm[idx].value }"
+                                @custom-change="updateFormData($event, 'value', idx)"></v-input></li>
                         <li class="py-2"><v-input placeholder="Description" class="text-sm" type="text" size="small"
-                                full style-type="avanda-grey-input" :value="{ value: paramForm[idx].description }" @custom-change="updateFormData($event, 'description', idx)"></v-input></li>
+                                full style-type="avanda-grey-input" :value="{ value: paramForm[idx].description }"
+                                @custom-change="updateFormData($event, 'description', idx)"></v-input></li>
                     </ul>
                 </div>
 
@@ -40,16 +43,18 @@ import VInput from '../../forms/v-input.vue'
 import { useRequestStore } from '~~/store/request';
 
 const requestStore = useRequestStore()
-const paramForm = requestStore.computedCurrentMainRequest?.params ?? [{
-    key: "",
-    value: "",
-    description: "",
-    active: true,
-}]
+const paramForm = computed(() => {
+    return requestStore.computedCurrentMainRequest?.params ?? [{
+        key: "",
+        value: "",
+        description: "",
+        active: true,
+    }]
+})
 const addNewBodyFormWhenOthersAreFull = () => {
-    const isAllFull = paramForm.every(eachForm => eachForm.key)
+    const isAllFull = paramForm.value.every(eachForm => eachForm.key)
     if (isAllFull) {
-        paramForm.push({
+        paramForm.value.push({
             key: "",
             value: "",
             description: "",
@@ -60,12 +65,12 @@ const addNewBodyFormWhenOthersAreFull = () => {
 }
 onMounted(() => {
     addNewBodyFormWhenOthersAreFull()
-    console.log({ paramForm })
+    console.log(paramForm.value)
 })
 
 const updateFormData = (data: string, column: [key: string], idx: number) => {
 
-    paramForm[idx][column] = data
+    paramForm.value[idx][column] = data
     addNewBodyFormWhenOthersAreFull()
     console.log({ paramForm })
 }
