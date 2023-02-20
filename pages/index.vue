@@ -13,11 +13,13 @@ import RequestInput from '../components/core/requestUI/RequestInput.vue'
 import { useAppStore } from "~~/store/app";
 import { useRequestStore } from "~~/store/request";
 import { useCreateNewRequest } from '~~/composables/useCreateNewrequest';
+import { useMakerequest } from '~~/composables/useMakerequest';
 
 
 const storeData = useAppStore();
 const requestStore = useRequestStore()
 const { addRequestTabHeader } = useCreateNewRequest()
+const { setRequestConfig } = useMakerequest()
 
 definePageMeta({
   layout: 'main-layout'
@@ -36,11 +38,16 @@ const computedCurrentTabDisplayed = computed(() => {
 })
 
 
+
+
 onMounted(() => {
   console.log('mounted')
   if (useRoute().query?.t) {
     addRequestTabHeader(useRoute().query?.t)
   }
+  setRequestConfig({
+    baseurl: storeData.projectDetails.baseurl
+  })
 
 })
 

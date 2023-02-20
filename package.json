@@ -8,14 +8,18 @@
     "postinstall": "nuxt prepare"
   },
   "devDependencies": {
+    "@avanda/avandajs": "^0.2.2",
     "@nuxtjs/tailwindcss": "^6.2.0",
     "@types/uuid": "^9.0.0",
     "nuxt": "^3.0.0",
+    "sass": "^1.58.0",
     "uuid": "^9.0.0"
   },
   "dependencies": {
     "@pinia/nuxt": "^0.4.6",
     "click-outside-vue3": "^4.0.1",
-    "pinia": "^2.0.29"
+    "pinia": "^2.0.29",
+    "vue-json-pretty": "^2.2.3",
+    "vue-modally-v3": "^0.0.7"
   }
 }

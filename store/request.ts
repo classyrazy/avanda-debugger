@@ -70,7 +70,11 @@ const store = () => {
                 data: {
                     test: "hbsfkjbsugfkjbs"
                 }
-            }
+            },
+            columns: [
+                {key: "username"},
+                {key: "id"}
+            ]
         },
         {
             id: "yo",
@@ -120,7 +124,8 @@ const store = () => {
                 data: {
                     test: "hbsfkjbsugfkjbs"
                 }
-            }
+            },
+            columns:[]
         },
     ])
     const newRequestHeaderstab = reactive<RequestTabheadeType[]>([])
@@ -161,6 +166,12 @@ const store = () => {
             request.type = requestToChangeTo
         }
     }
+    const findRequestById = (id: string, cb: Function) => {
+        let request =  requests.find((request) => request.id === id)
+        if (request) {
+            cb(request)
+        }
+    }
     return {
         requestsHeaderTabs,
         newRequestHeaderstab,
@@ -175,7 +186,8 @@ const store = () => {
         requests,
         computedCurrentMainRequest,
         requestTypeAvailable,
-        changeRequestTypeOnHeader
+        changeRequestTypeOnHeader,
+        findRequestById
     }
 }
 

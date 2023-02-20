@@ -21,3 +21,29 @@
 .text-get{
   color: var(--get-request-green);
 }
+
+.requestoption li.nav-link {
+  display: inline-block;
+  position: relative;
+  /* margin: auto; */
+}
+
+.requestoption li.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: -3px;
+  left: 0;
+  background: var(--main-purple);
+  transform-origin: bottom center;
+  transition: transform 0.01s ease-out;
+}
+
+.requestoption li.nav-link.active:after {
+  transform: scaleX(1);
+  transform-origin: bottom center;
+}

@@ -27,9 +27,14 @@
                         <li class="border-r py-2"><v-input placeholder="Value" class="text-sm" type="text" size="small"
                                 full style-type="avanda-grey-input" :value="{ value: paramForm[idx].value }"
                                 @custom-change="updateFormData($event, 'value', idx)"></v-input></li>
-                        <li class="py-2"><v-input placeholder="Description" class="text-sm" type="text" size="small"
+                        <li class="py-2">
+                            <!-- <v-input placeholder="Description" class="text-sm" type="text" size="small"
                                 full style-type="avanda-grey-input" :value="{ value: paramForm[idx].description }"
-                                @custom-change="updateFormData($event, 'description', idx)"></v-input></li>
+                                @custom-change="updateFormData($event, 'description', idx)"></v-input> -->
+                            <textarea placeholder="Description"
+                                class="text-sm w-full flex items-center justify-center bg-transparent border-none appearance-none outline-0 text-gray-400 focus:text-black resize-none max-h-10"
+                                v-model="paramForm[idx].description"></textarea>
+                        </li>
                     </ul>
                 </div>
 

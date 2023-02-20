@@ -24,6 +24,7 @@ type mainRequestType = {
     authorisation:{
         type: string,
     },
+    columns:{key: string, active: boolean}[],
     requestData: {
         type: requestType
         name: string,

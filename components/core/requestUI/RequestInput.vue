@@ -35,11 +35,11 @@
                 </div>
                 <div class="service-input col-span-4 flex items-center">
                     <input placeholder="Controller/ServiceName"
-                        class="text-sm rounded-lg my-auto bg-transparent border-none inline-block appearance-none"
+                        class="text-sm rounded-lg my-auto w-full bg-transparent border-none inline-block appearance-none"
                         type="text" v-model="requestData.serviceName">
                 </div>
             </div>
-            <v-button type="pry" class="w-auto">Send</v-button>
+            <v-button type="pry" class="w-auto" @click="chooseFunctionToRun(requestStore.computedCurrentMainRequest?.id, requestData.serviceName, requestData.type)">Send</v-button>
             <v-button type="pry" class="w-auto">Nested Function</v-button>
         </div>
     </div>
@@ -53,6 +53,7 @@ import VInput from '../forms/v-input.vue'
 import DownIcon from '../../icons/down-icon.vue'
 import { useRequestStore } from "~~/store/request";
 import requestType from '~~/utils/types/requestType';
+import { useMakerequest } from '~~/composables/useMakerequest';
 
 
 // interface Props {
@@ -60,6 +61,7 @@ import requestType from '~~/utils/types/requestType';
 // }
 // const props = defineProps<Props>()
 const requestStore = useRequestStore()
+const {testGetRequest, testGetNestedRequestFunction, chooseFunctionToRun} = useMakerequest()
 const currentRequest = computed(() => requestStore.computedCurrentMainRequest)
 let requestDropdownType = ref(false)
 let serviceLinkDropDownType = ref(false)

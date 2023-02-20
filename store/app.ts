@@ -52,6 +52,35 @@ const store = () => {
     const { findFolderById } = useHandleFolder()
     const { addRequestTabHeader } = useCreateNewRequest()
 
+    const projectDetails = reactive<{
+        name: string,
+        baseurl: string,
+        description: string,
+        environs: {
+            key: string,
+            value: string
+        }[]
+    }>({
+        name: "Corep",
+        baseurl: "http://192.168.43.133:4000/",
+        description: "This is the server documentation for the corep project",
+        environs: [
+            {
+                key: "token",
+                value: "fkddfdkggfbglk;jflbhklfdbl.fjlkbflkbfkl'blkkjflbfl"
+            },
+            {
+                key: "test_token",
+                value: "fkddfdkggfbglk;jflbhklfdbl.fjlkbflkbfkl'blkkjflbfl"
+            }
+        ]
+    })
+    function addToEnvironment() {
+        projectDetails.environs.push({
+            key: "",
+            value: ""
+        })
+    }
     function updateCurrentFolder(id: string) {
         console.log(findFolderById(id, allFolders), { id, allFolders })
         currentFolderId.value = id
@@ -88,7 +117,9 @@ const store = () => {
         currentFolderId,
         computedCurrentFolder,
         allFolders,
-        createFolderOrRequest
+        createFolderOrRequest,
+        projectDetails,
+        addToEnvironment
     }
 }
 export const useAppStore = defineStore("app", store)

@@ -33,10 +33,14 @@
                                 size="small" full style-type="search" v-if="BodyForm[idx].file"></v-input>
 
                         </li>
-                        <li class="flex items-center"><v-input placeholder="Description"
+                        <li class="flex items-center">
+                            <!-- <v-input placeholder="Description"
                                 class="text-sm text-gray-400 focus:text-black" type="text" size="small" full
                                 style-type="avanda-grey-input" :value="{ value: BodyForm[idx].description }"
-                                @custom-change="updateBodyFormData($event, 'description', true, idx)"></v-input>
+                                @custom-change="updateBodyFormData($event, 'description', true, idx)"></v-input> -->
+                                <textarea placeholder="Description"
+                                class="text-sm w-full flex items-center justify-center bg-transparent border-none appearance-none outline-0 text-gray-400 focus:text-black resize-none max-h-10"
+                                v-model="BodyForm[idx].description"></textarea>
                         </li>
                     </ul>
                 </div>
@@ -114,7 +118,7 @@ const addNewBodyFormWhenOthersAreFull = () => {
             key: "",
             value: "",
             description: "",
-            active: false,
+            active: true,
             file: false
         })
     }

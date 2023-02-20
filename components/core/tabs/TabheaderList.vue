@@ -8,7 +8,7 @@
             <div class="w-10 h-10 flex justify-center items-center cursor-pointer hover:bg-gray-200 rounded-full" @click="createNewRequest('New Request', 'get', storeData.currentFolderId)">
                 <add-icon></add-icon>
             </div>
-            <div class="config border-l px-2 flex items-center gap-4 cursor-pointer">
+            <div class="config border-l px-2 flex items-center gap-4 cursor-pointer" @click="handleClickOnAppConfig">
                 <p class="text-md">Corep - (config)</p>
                 <down-icon :size="16"></down-icon>
             </div>
@@ -17,17 +17,30 @@
 </template>
 
 <script setup lang="ts">
+import AppConfigModal from '../../modals/app-config-modal.vue'
 import DownIcon from '../../icons/down-icon.vue'
 import AddIcon from '../../icons/add-icon.vue'
 import TabHeader from './TabHeader.vue'
 import { useRequestStore } from "~~/store/request";
 import { useAppStore } from "~~/store/app";
 import { useCreateNewRequest } from '~~/composables/useCreateNewrequest';
+import { useModal } from "vue-modally-v3";
 
 const requestStore = useRequestStore();
 const storeData = useAppStore();
 
 let {createNewRequest} = useCreateNewRequest()
+
+async function handleClickOnAppConfig(){
+     await useModal(AppConfigModal, {
+        options: {
+            background: 'white',
+            width: 1000,
+            type: "modal",
+            blur: false
+        }
+    })
+}
 </script>
 
 <style scoped>
