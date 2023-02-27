@@ -12,11 +12,13 @@
             </div>
         </div>
         <modal-root></modal-root>
+        <alert></alert>
 
     </div>
 </template>
 
 <script setup lang="ts">
+import Alert from '../components/core/Alert.vue'
 import FileDirectoryHeader from '../components/Topbars/FileDirectoryHeader.vue'
 import TabsTopbar from '../components/Topbars/TabsTopbar.vue'
 import MainHeader from '../components/Topbars/MainHeader.vue'

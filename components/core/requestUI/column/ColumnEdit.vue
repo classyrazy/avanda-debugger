@@ -33,7 +33,7 @@ import { useRequestStore } from '~~/store/request';
 
 const requestStore = useRequestStore()
 const columnForm = computed(() => {
-    return requestStore.computedCurrentMainRequest?.columns ?? [{
+    return requestStore.computedCurrentMainRequest?.columns? requestStore.computedCurrentMainRequest?.columns : [{
         key: "",
         active: true
     }]

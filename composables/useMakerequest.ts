@@ -2,7 +2,8 @@
 import { Graph } from "@avanda/avandajs";
 import { useRequestStore } from "~~/store/request";
 import { mainRequestType } from "~~/utils/types/mainRequestType";
-
+import { useAlert } from "./useToast";
+import { nestedFunctionType } from "~~/utils/types/nestedFunctionType";
 export const useMakerequest = () => {
     const requestStore = useRequestStore()
     const setRequestConfig = (config: any) => {
@@ -51,22 +52,61 @@ export const useMakerequest = () => {
         }
         return true
     }
-    const makeMainGetRequest = async (requestId: string, service: string) => {
-        if (!validateService(service)) return
-        try {
-            let currentRequesttab = requestStore.computedCurrentMainRequest
-            let filteredParams = currentRequesttab?.params.filter(eachParam => eachParam.key.trim() !== "" && eachParam.active).map(eachParam => {
-                return {
-                    [eachParam.key]: eachParam.value
-                }
-            })
-            let filteredColumns = currentRequesttab?.columns.filter(eachColumn => eachColumn.key.trim() !== "" && eachColumn.active).map(eachColumn => {
-                return eachColumn.key
-            })
-            console.log(Object.assign({}, ...filteredParams) ?? {}, filteredColumns.join(", "))
+    const makeMainGetRequest = async (requestId: string, service: string, requestObj: mainRequestType) => {
 
-            let req = new Graph().service(service).fetch(...filteredColumns).params(Object.assign({}, ...filteredParams) ?? {})
-            let reqData = await req.get()
+        try {
+            // let currentRequesttab = requestStore.computedCurrentMainRequest
+            let currentRequesttab = requestObj
+            let filteredParams = filterToKeyValue(currentRequesttab?.params ?? [])
+            let filteredColumns = filterColumns(currentRequesttab?.columns ?? [])
+            console.log(Object.assign({}, ...filteredParams) ?? {}, "function", currentRequesttab?.nestedFunction)
+            let req = new Graph().service(service)
+            console.log("request befire func", {req})
+
+            function handleInnerNested (el: nestedFunctionType[], req: any, initialColumns: any) {
+                if (el) {
+                    console.log(el, "el", req, "req", initialColumns, "initialColumns")
+                    for (let j = 0; j < el.length; j++) {
+                        let innerEl = el[j]
+                        if (j === 0) {
+                            req = req.fetch(...filterColumns(initialColumns), new Graph().service(innerEl.service).fetch(...filterColumns(innerEl.columns)).as(innerEl.name))
+                        } else {
+                            req = req.fetch(new Graph().service(el[j].service).fetch(...filterColumns(innerEl.columns)).as(el[j].name))
+                        }
+                        if(innerEl.nestedFunction){
+                            req = handleInnerNested(innerEl.nestedFunction, req, innerEl.columns)
+                        }
+                    }
+
+                }
+                return req
+            }
+            // let req = new Graph().service(service).fetch(...filteredColumns).params(Object.assign({}, ...filteredParams) ?? {})
+            if (currentRequesttab && currentRequesttab.nestedFunction) {
+                // for (let i = 0; i < currentRequesttab?.nestedFunction.length; i++) {
+                //     const element = currentRequesttab?.nestedFunction[i];
+                //     if(i === 0){
+                //         req = req.fetch(...filteredColumns, new Graph().service(currentRequesttab?.nestedFunction[i].service).fetch(...filterColumns(element.columns)).as(currentRequesttab?.nestedFunction[i].name))
+                //     }
+                //     else{
+                //     // req = req.fetch(...filterColumns(currentRequesttab?.nestedFunction[i-1].columns), new Graph().service(element.service).as(element.name))
+                //         req = req.fetch(...filterColumns(currentRequesttab?.nestedFunction[i-1].columns), new Graph().service(element.service).fetch(...filterColumns(element.columns)).as(element.name))
+                //     }
+                //     if(element.nestedFunction){
+                //         req = handleInnerNested(element.nestedFunction, req, element.columns)
+                //     }
+                //     console.log(element, "element", req)
+                //     console.log("i", i, req)
+                // }
+                console.log("request befire func", {req})
+                req = handleInnerNested(currentRequesttab?.nestedFunction, req, currentRequesttab?.columns)
+                req = req.params(Object.assign({}, ...filteredParams) ?? {})    
+                console.log(req, "test nested function")
+            }else{
+                req = req.fetch(...filteredColumns).params(Object.assign({}, ...filteredParams) ?? {})
+            }
+
+            let reqData: any = await req.get()
             requestStore.findRequestById(requestId, (data: mainRequestType) => {
                 data.responseData.data = reqData
                 console.log(reqData)
@@ -78,13 +118,15 @@ export const useMakerequest = () => {
             requestStore.findRequestById(requestId, (data: mainRequestType) => {
                 data.responseData.data = error
                 console.log(error)
-
             })
+        } finally {
+            requestObj.responseData.loading = false
         }
     }
     const makemainPostRequest = async (requestId: string, service: string) => {
         if (!validateService(service)) return
         try {
+            loading.value = true
 
             let currentRequestTab = requestStore.computedCurrentMainRequest
             let filteredParams = currentRequestTab?.params.filter(eachParam => eachParam.key.trim() !== "" && eachParam.active).map(eachParam => {
@@ -101,7 +143,7 @@ export const useMakerequest = () => {
                 }
             })
             let req = new Graph().service(service).fetch(...filteredColumns).params(Object.assign({}, ...filteredParams) ?? {}).post(Object.assign({}, ...filteredBody) ?? {})
-            let reqData = await (await req).getData()
+            let reqData = await (await req)
             requestStore.findRequestById(requestId, (data: mainRequestType) => {
                 data.responseData.data = reqData
                 console.log(reqData)
@@ -114,21 +156,49 @@ export const useMakerequest = () => {
                 console.log(error)
 
             })
+        } finally {
+            loading.value = false
+
         }
     }
     const chooseFunctionToRun = (requestId: string, service: string, type: string) => {
         console.log("chooseFunctionToRun", requestId, service, type)
-        if (type === "get") {
-            makeMainGetRequest(requestId, service)
-        } else if (type === "post") {
-            makemainPostRequest(requestId, service)
+        if (!validateService(service)) {
+            useAlert().openAlert({ type: 'ERROR', msg: `Error: Invalid Service` })
+            return
         }
+        requestStore.findRequestById(requestId, (data: mainRequestType) => {
+            data.responseData.data = null
+            if (data.responseData.loading) return;
+            data.responseData.loading = true;
+            if (type === "get") {
+                makeMainGetRequest(requestId, service, data)
+            } else if (type === "post") {
+                makemainPostRequest(requestId, service)
+            }
+        })
+    }
+    const handleNestedFunction = (nestedObj: nestedFunctionType) => {
+        console.log({ nestedObj })
+
+    }
+    const filterToKeyValue = (array: any[]) => {
+        return array.filter(eachParam => eachParam.key.trim() !== "" && eachParam.value.trim() !== "" && eachParam.active).map(eachParam => {
+            return {
+                [eachParam.key]: eachParam.value
+            }
+        })
+    }
+    const filterColumns = (arr: { key: string, active: boolean }[]) => {
+        return arr.filter(eachColumn => eachColumn.key.trim() !== "" && eachColumn.active).map(eachColumn => {
+            return eachColumn.key
+        })
     }
     return {
         setRequestConfig,
         testGetRequest,
         testGetNestedRequestFunction,
         makeMainGetRequest,
-        chooseFunctionToRun
+        chooseFunctionToRun,
     }
 }

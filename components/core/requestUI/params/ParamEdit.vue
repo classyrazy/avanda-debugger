@@ -1,4 +1,4 @@
-<template>
+hyuz<template>
     <div class="pt-6">
         <h3 class="text-md font-semibold text-avanda-grey-dark mb-3 mx-4 my-2">Query Params</h3>
         <div class="param-table border-t">
@@ -49,7 +49,7 @@ import { useRequestStore } from '~~/store/request';
 
 const requestStore = useRequestStore()
 const paramForm = computed(() => {
-    return requestStore.computedCurrentMainRequest?.params ?? [{
+    return requestStore.computedCurrentMainRequest?.params.length ? requestStore.computedCurrentMainRequest?.params : [{
         key: "",
         value: "",
         description: "",
@@ -58,6 +58,7 @@ const paramForm = computed(() => {
 })
 const addNewBodyFormWhenOthersAreFull = () => {
     const isAllFull = paramForm.value.every(eachForm => eachForm.key)
+    console.log({isAllFull})
     if (isAllFull) {
         paramForm.value.push({
             key: "",
@@ -66,6 +67,7 @@ const addNewBodyFormWhenOthersAreFull = () => {
             active: true,
         })
     }
+    
 
 }
 onMounted(() => {

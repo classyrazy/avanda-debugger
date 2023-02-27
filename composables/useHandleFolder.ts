@@ -2,9 +2,11 @@ import { v4 as uuidv4 } from 'uuid'
 import { fileStruct } from "@/utils/types/fileStruct";
 import TreeItem from '~~/utils/types/TreeItem';
 import { useAppStore } from "~~/store/app"
+import { useRequestStore } from "~~/store/request"
 export const useHandleFolder = () => {
     let allFolders: TreeItem[] = []
     const storeData = useAppStore()
+    const requestStore = useRequestStore()
     const currentFolder = ref<string | undefined | null>('')
     const createNewFolderOrRequest = (name: string, type: fileStruct) => {
         const folderOrRequestId = uuidv4()
@@ -27,6 +29,7 @@ export const useHandleFolder = () => {
                 name: '',
                 req_type: "get",
             }
+            requestStore.createNewRequest(objTopush)
         }
         console.log("Obj to push", objTopush)
         storeData.createFolderOrRequest(objTopush,storeData.currentFolderId, type)

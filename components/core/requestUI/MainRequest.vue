@@ -17,7 +17,7 @@
             <div class="respoense border-t font-semibold text-md text-avanda-grey-dark">
                 <h3 class="pt-2 px-2">Response</h3>
                 <div class="max-h-[38vh] overflow-y-auto">
-                    <div class="empty flex justify-center items-center min-h-[35vh]" v-if="!currentRequestResponseData.data">
+                    <div class="empty flex justify-center items-center min-h-[35vh]" v-if="!currentRequestResponseData?.data && !currentRequestResponseData?.loading">
                         <ul class="marker:text-main-purple list-disc pl-5 space-y-3 text-avanda-grey-dark">
                             <li class="marker:.">
                                 <p>Name Your request</p>
@@ -31,8 +31,12 @@
                         </ul>
                     </div>
                     <div class="" v-else>
-                        <vue-json-pretty :data="currentRequestResponseData.data" :editable="true" :show-icon="true" :editableTrigger="dblclick" />
+                        <vue-json-pretty :data="currentRequestResponseData?.data" :editable="true" :show-icon="true" editableTrigger="dblclick" />
                     </div>
+                    <div class="w-full flex justify-center items-center" v-if="currentRequestResponseData?.loading">
+                        <loader-icon class="" :size="50"></loader-icon>
+                    </div>
+                    {{ currentRequestResponseData?.loading }}
                 </div>
             </div>
         </section>
@@ -43,6 +47,7 @@
 </template>
 
 <script setup lang="ts">
+import LoaderIcon from '../loader/loader-icon.vue'
 import NestedFunctionEdit from './nestedFunction/NestedFunctionEdit.vue'
 import ColumnEdit from './column/ColumnEdit.vue'
 import BodyEdit from './body/BodyEdit.vue'
@@ -52,6 +57,7 @@ import RequestInput from './RequestInput.vue'
 import { useAppStore } from "~~/store/app";
 import { useRequestStore } from "~~/store/request";
 import { requestInnerTabs } from "~~/utils/types/appStyleTypes"
+import { useMakerequest } from '~~/composables/useMakerequest'
 import VueJsonPretty from 'vue-json-pretty';
 
 import 'vue-json-pretty/lib/styles.css';
@@ -63,12 +69,7 @@ const computedCurrentTabDisplayed = computed(() => {
     return currentRequestInnerTab.value
 })
 const currentRequestResponseData = computed(() => {
-    return requestStore.computedCurrentMainRequest?.responseData ?? {
-        type: "get",
-        data :{
-            key: "value"
-        }
-    }
+    return requestStore.computedCurrentMainRequest?.responseData ?? null
 })
 interface innerTabs {
     [key: string]: object

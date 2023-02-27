@@ -39,8 +39,8 @@
                         type="text" v-model="requestData.serviceName">
                 </div>
             </div>
-            <v-button type="pry" class="w-auto" @click="chooseFunctionToRun(requestStore.computedCurrentMainRequest?.id, requestData.serviceName, requestData.type)">Send</v-button>
-            <v-button type="pry" class="w-auto">Nested Function</v-button>
+            <v-button type="pry" class="w-auto" @click="chooseFunctionToRun(requestStore.computedCurrentMainRequest?.id ?? '', requestData.serviceName, requestData.type)">Send</v-button>
+            <!-- <v-button type="pry" class="w-auto">Nested Function</v-button> -->
         </div>
     </div>
 </template>

@@ -5,7 +5,7 @@
                 <h1 class="text-xl font-semibold">App Configuration</h1>
                 <p class="text-sm mt-2">Edit your app configuration Like your baseURl and add variables to your app</p>
             </div>
-            <close-icon class="cursor-pointer" @click="$emit('close')"></close-icon>
+            <close-icon class="cursor-pointer" @click="$emit('close', appStore.projectDetails.baseurl)"></close-icon>
         </div>
         <div class="my-4">
             <label for="app-name" class="text-sm font-medium">App Name</label>

@@ -1,4 +1,5 @@
 import requestType from "./requestType"
+import { nestedFunctionType } from "./nestedFunctionType"
 type mainRequestType = {
     id: string,
     params: {
@@ -32,8 +33,10 @@ type mainRequestType = {
     },
     responseData:{
         type: string,
-        data: any
-    }
+        data: any,
+        loading:boolean 
+    },
+    nestedFunction: nestedFunctionType[] | null
 }
 
 export{

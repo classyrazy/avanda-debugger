@@ -69,12 +69,14 @@ const store = () => {
                 type: "json",
                 data: {
                     test: "hbsfkjbsugfkjbs"
-                }
+                },
+                loading: false
             },
             columns: [
-                {key: "username"},
-                {key: "id"}
-            ]
+                { key: "username", active: true },
+                { key: "id", active: true },
+            ],
+            nestedFunction: null
         },
         {
             id: "yo",
@@ -123,9 +125,109 @@ const store = () => {
                 type: "json",
                 data: {
                     test: "hbsfkjbsugfkjbs"
-                }
+                },
+                loading: false
             },
-            columns:[]
+            columns: [],
+            nestedFunction: [
+                {
+                    id: "nested-id-1",
+                    name: "blog",
+                    service: "Blog/getUserBlog",
+                    params: [
+                        {
+                            key: "id",
+                            value: "1",
+                            active: true
+                        },
+                        {
+                            key: "id",
+                            value: "2",
+                            active: true
+                        }
+                    ],
+                    columns: [
+                        {
+                            key: "id",
+                            active: true
+                        },
+                        {
+                            key: "title",
+                            active: true
+                        },
+                        {
+                            key: "description",
+                            active: true
+                        }
+                    ],
+                    nestedFunction: null
+                },
+                {
+                    id: "nested-id-2",
+                    name: "blog",
+                    service: "Blog/getUserBlog",
+                    params: [
+                        {
+                            key: "id",
+                            value: "1",
+                            active: true
+                        },
+                        {
+                            key: "id",
+                            value: "2",
+                            active: true
+                        }
+                    ],
+                    columns: [
+                        {
+                            key: "id",
+                            active: true
+                        },
+                        {
+                            key: "title",
+                            active: true
+                        },
+                        {
+                            key: "description",
+                            active: true
+                        }
+                    ],
+                    nestedFunction: [
+                        {
+                            id: "nested-id-nested-1",
+                            name: "blog",
+                            service: "Blog/getUserBlog",
+                            params: [
+                                {
+                                    key: "id",
+                                    value: "1",
+                                    active: true
+                                },
+                                {
+                                    key: "id",
+                                    value: "2",
+                                    active: true
+                                }
+                            ],
+                            columns: [
+                                {
+                                    key: "id",
+                                    active: true
+                                },
+                                {
+                                    key: "title",
+                                    active: true
+                                },
+                                {
+                                    key: "description",
+                                    active: true
+                                }
+                            ],
+                            nestedFunction: null
+                        }
+                    ]
+                }
+            ]
         },
     ])
     const newRequestHeaderstab = reactive<RequestTabheadeType[]>([])
@@ -143,54 +245,105 @@ const store = () => {
         newRequestHeaderstab.push(request)
 
     }
-    const removeRequestFromHeaderTabs = (requestId: string) => {
-        const index = requestsHeaderTabs.findIndex((request) => request.id === requestId)
-        requestsHeaderTabs.splice(index, 1)
-    }
-    const removeRequestFromNewHeaderTabs = (requestId: string) => {
-        const index = newRequestHeaderstab.findIndex((request) => request.id === requestId)
-        newRequestHeaderstab.splice(index, 1)
-    }
-    const changeCurrentRequestTabModel = (tab: requestInnerTabs, requestId: string = currentRequestheaderId.value) => {
-        const request = requestsHeaderTabs.find((request) => request.id === requestId)
+    const createNewRequest = (requestHeader: TreeItem) => {
+        const request = requests.find((request) => request.id === requestHeader.id)
         if (request) {
-            request.current_req_tab_model = tab
+            return
+        } else {
+            requests.push({
+                id: requestHeader.id ?? uuidv4(),
+                params: [],
+                headers: [],
+                body: [],
+                authorisation: {
+                    type: "bearer",
+                },
+                requestData: {
+                    type: requestHeader.req_type ?? "get",
+                    name: requestHeader.fileName ?? '',
+                    serviceName: "",
+                },
+                responseData: {
+                    type: "json",
+                    loading: false,
+                    data: null
+                },
+                columns: [],
+                nestedFunction: null
+            })
         }
     }
-    const computedCurrentMainRequest = computed(() => {
-        return requests.find((request) => request.id === currentRequestheaderId.value)
-    })
-    const changeRequestTypeOnHeader = (requestToChangeTo : requestType) => {
-        const request = computedCurrentRequestHeader.value
-        if (request) {
-            request.type = requestToChangeTo
+        const removeRequestFromHeaderTabs = (requestId: string) => {
+            const index = requestsHeaderTabs.findIndex((request) => request.id === requestId)
+            requestsHeaderTabs.splice(index, 1)
+        }
+        const removeRequestFromNewHeaderTabs = (requestId: string) => {
+            const index = newRequestHeaderstab.findIndex((request) => request.id === requestId)
+            newRequestHeaderstab.splice(index, 1)
+        }
+        const changeCurrentRequestTabModel = (tab: requestInnerTabs, requestId: string = currentRequestheaderId.value) => {
+            const request = requestsHeaderTabs.find((request) => request.id === requestId)
+            if (request) {
+                request.current_req_tab_model = tab
+            }
+        }
+        const computedCurrentMainRequest = computed(() => {
+            return requests.find((request) => request.id === currentRequestheaderId.value)
+        })
+        const changeRequestTypeOnHeader = (requestToChangeTo: requestType) => {
+            const request = computedCurrentRequestHeader.value
+            if (request) {
+                request.type = requestToChangeTo
+            }
+        }
+        const findRequestById = (id: string, cb: Function) => {
+            let request = requests.find((request) => request.id === id)
+            if (request) {
+                cb(request)
+            }
+        }
+        const createNewNestedFunction = (requestId: string, nestedFunctionId: string | null = null) => {
+            const request = requests.find((request) => request.id === requestId)
+            if (request) {
+                const nestedFunction = {
+                    id: uuidv4(),
+                    name: "",
+                    service: "",
+                    params: [],
+                    columns: [],
+                    nestedFunction: []
+                }
+                if (nestedFunctionId) {
+                    const nestedFunction = request.nestedFunction?.find((nestedFunction) => nestedFunction.id === nestedFunctionId)
+                    if (nestedFunction) {
+                        nestedFunction.nestedFunction?.push(nestedFunction)
+                    }
+                } else {
+                    request.nestedFunction?.push(nestedFunction)
+                }
+            }
+        }
+        return {
+            requestsHeaderTabs,
+            newRequestHeaderstab,
+            addToRequestHeaderTabs,
+            addToNewRequestHeaderTabs,
+            removeRequestFromHeaderTabs,
+            currentRequestheaderId,
+            setcurrentRequestheaderId,
+            removeRequestFromNewHeaderTabs,
+            computedCurrentRequestHeader,
+            changeCurrentRequestTabModel,
+            requests,
+            computedCurrentMainRequest,
+            requestTypeAvailable,
+            changeRequestTypeOnHeader,
+            findRequestById,
+            createNewNestedFunction,
+            createNewRequest
         }
     }
-    const findRequestById = (id: string, cb: Function) => {
-        let request =  requests.find((request) => request.id === id)
-        if (request) {
-            cb(request)
-        }
-    }
-    return {
-        requestsHeaderTabs,
-        newRequestHeaderstab,
-        addToRequestHeaderTabs,
-        addToNewRequestHeaderTabs,
-        removeRequestFromHeaderTabs,
-        currentRequestheaderId,
-        setcurrentRequestheaderId,
-        removeRequestFromNewHeaderTabs,
-        computedCurrentRequestHeader,
-        changeCurrentRequestTabModel,
-        requests,
-        computedCurrentMainRequest,
-        requestTypeAvailable,
-        changeRequestTypeOnHeader,
-        findRequestById
-    }
-}
 
-export const useRequestStore = defineStore("request", store)
+    export const useRequestStore = defineStore("request", store)
 
 
