@@ -74,6 +74,7 @@ export default {
             "avanda-grey-input": "bg-transparent border-none",
             "avanda-create-file-input": "bg-transparent border border-gray-100 p-1",
             "avanda-create-file-name-input": "bg-avanda-grey border border-gray-100 p-1 ",
+            "avanda-create-project-name-input": "bg-avanda-grey border p-1 ",
         };
         let base = "";
         let sizes = {

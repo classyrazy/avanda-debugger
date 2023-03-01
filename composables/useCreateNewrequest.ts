@@ -28,7 +28,7 @@ export const useCreateNewRequest = () => {
 
     }
     const addRequestTabHeader = (id: string) => {
-        const requestFetchToAdd: TreeItem = findFolderById(id, storeData.allFolders)
+        const requestFetchToAdd: TreeItem = findFolderById(id, storeData.computedAllFolders)
         if (requestFetchToAdd)
             if (!checkIfRequestheaderExist(id, requestStore.requestsHeaderTabs)) {
                 requestStore.addToRequestHeaderTabs({

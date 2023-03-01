@@ -6,9 +6,9 @@
                 :class="toggleOpenFolder ? 'rotate-90' : ''"></toggle-side-open-icon>
             <!-- <span class="name" > -->
             <v-tooltip :label="node.type === 'request' ? node.fileName: node.name" @label-click="handleNodeClick"
-                :class="node.type === 'folder' ? '' : 'ml-6'"
+                :class="node.type === 'folder' ? '' : 'pl-6'"
                 d-menu-styles="border shadow-md"
-                :dc-con-styles="node.type === 'request' && currentTabId == node.id ? 'bg-black' : ''">
+                :dc-con-styles="node.type === 'request' && currentTabId == node.id ? 'bg-purple-200' : ''">
                 <ul class="max-h-[200px] overflow-y-auto"
                     v-if="node.type === 'folder'">
                     <li class="block w-full text-sm cursor-pointer hover:bg-[#eee] rounded-md mt-2 p-2"
@@ -31,7 +31,7 @@
             </v-tooltip>
             <!-- </span> -->
         </div>
-        <ul v-if="node.children && node.children.length" class="ml-4" :class="toggleOpenFolder ? 'block' : 'hidden'">
+        <ul v-if="node.children && node.children.length" class="pl-4" :class="toggleOpenFolder ? 'block' : 'hidden'">
             <node-tree v-for="(child, idx) in node.children" :node="child" :key="idx"></node-tree>
         </ul>
     </li>

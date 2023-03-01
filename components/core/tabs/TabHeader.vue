@@ -5,21 +5,25 @@
             <span class="text-xl">·</span>
             <span class="text-md font-medium break-normal whitespace-nowrap">{{name}}</span>
         </div>
-        <div class="w-5 h-5 flex justify-center items-center cursor-pointer hover:bg-gray-200 rounded-md">
+        <div class="w-5 h-5 flex justify-center items-center cursor-pointer hover:bg-gray-200 rounded-md" @click.stop="requestStore.removeRequestFromHeaderTabs(id)">
             <close-icon :size="16"></close-icon>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+
 import CloseIcon from '../../icons/close-icon.vue'
 import requestType from "~/utils/types/requestType"
+import { useRequestStore } from "~~/store/request";
 interface TabProps {
     id: string;
     name: string;
     requestType: requestType;
     newTab: boolean;
 }
+const requestStore = useRequestStore();
+
 
 const props = defineProps<TabProps>()
 let computedRequestType = computed(() => {

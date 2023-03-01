@@ -38,14 +38,13 @@ let fileName = reactive({
 function generatePath(object: TreeItem, folders: string[] = []) {
     if (!object.parentFolderId) {
         folders.unshift(object.name);
-        console.log("folders", folders)
         return folders.join("-->");
     }
     folders.unshift(object.name);
-    const parent = findFolderById(object.parentFolderId, storeData.allFolders);
-    console.log({ parent })
+    const parent = findFolderById(object.parentFolderId, storeData.computedAllFolders);
+    // console.log({ parent })
     generatePath(parent, folders);
-    console.log(folders)
+    // console.log(folders)
     return folders.join("-->");
 }
 const createFolderOrRequest = (type: fileStruct) => {

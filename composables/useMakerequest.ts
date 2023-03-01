@@ -1,11 +1,13 @@
 // import Graph from "../libs/avanda";
 import { Graph } from "@avanda/avandajs";
 import { useRequestStore } from "~~/store/request";
+import { useAppStore } from "~~/store/app";
 import { mainRequestType } from "~~/utils/types/mainRequestType";
 import { useAlert } from "./useToast";
 import { nestedFunctionType } from "~~/utils/types/nestedFunctionType";
 export const useMakerequest = () => {
     const requestStore = useRequestStore()
+    const storeData = useAppStore()
     const setRequestConfig = (config: any) => {
         Graph.setRequestConfig({
             baseURL: config.baseurl,
@@ -43,15 +45,22 @@ export const useMakerequest = () => {
     const validateService = (service: string) => {
         // create regex to validate service
         // a pattern that follows this string "Controller/Function"
+        if(storeData.projectDetails?.baseurl.trim() === ""){
+            useAlert().openAlert({ type: 'ERROR', msg: `Error: Set your BASEURL in Settings` })
+            return 
+        }
         let regex = new RegExp("^[a-zA-Z]+/[a-zA-Z]+$")
 
         if (service.trim() === "") {
+            useAlert().openAlert({ type: 'ERROR', msg: `Error: Specify a Service` })
             return false
         } else if (!regex.test(service)) {
+            useAlert().openAlert({ type: 'ERROR', msg: `Error: Invalid Service` })
             return false
         }
         return true
     }
+    
     const makeMainGetRequest = async (requestId: string, service: string, requestObj: mainRequestType) => {
 
         try {
@@ -123,10 +132,9 @@ export const useMakerequest = () => {
             requestObj.responseData.loading = false
         }
     }
-    const makemainPostRequest = async (requestId: string, service: string) => {
+    const makemainPostRequest = async (requestId: string, service: string, ) => {
         if (!validateService(service)) return
         try {
-            loading.value = true
 
             let currentRequestTab = requestStore.computedCurrentMainRequest
             let filteredParams = currentRequestTab?.params.filter(eachParam => eachParam.key.trim() !== "" && eachParam.active).map(eachParam => {
@@ -157,14 +165,13 @@ export const useMakerequest = () => {
 
             })
         } finally {
-            loading.value = false
+            requestObj.responseData.loading = false
 
         }
     }
     const chooseFunctionToRun = (requestId: string, service: string, type: string) => {
         console.log("chooseFunctionToRun", requestId, service, type)
         if (!validateService(service)) {
-            useAlert().openAlert({ type: 'ERROR', msg: `Error: Invalid Service` })
             return
         }
         requestStore.findRequestById(requestId, (data: mainRequestType) => {

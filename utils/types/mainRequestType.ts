@@ -1,6 +1,7 @@
 import requestType from "./requestType"
 import { nestedFunctionType } from "./nestedFunctionType"
 type mainRequestType = {
+    project_id: string,
     id: string,
     params: {
         key: string,

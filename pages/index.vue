@@ -6,6 +6,7 @@
   </div>
 </template>
 <script setup lang="ts">
+import CreateNewApp from '../components/modals/create-new-app.vue'
 import MainRequest from '../components/core/requestUI/MainRequest.vue'
 import NewRequest from '../components/core/requestUI/NewRequest.vue'
 import VTooltip from '../components/core/forms/v-tooltip.vue'
@@ -14,7 +15,7 @@ import { useAppStore } from "~~/store/app";
 import { useRequestStore } from "~~/store/request";
 import { useCreateNewRequest } from '~~/composables/useCreateNewrequest';
 import { useMakerequest } from '~~/composables/useMakerequest';
-
+import { useModal } from 'vue-modally-v3';
 
 const storeData = useAppStore();
 const requestStore = useRequestStore()
@@ -30,6 +31,7 @@ console.log('hello world', useRoute().query.t)
 const computedCurrentTabDisplayed = computed(() => {
   let regex = new RegExp(`new-\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}`)
   if (regex.test(useRoute().query?.t)) {
+    if(!requestStore.newRequestHeaderstab.find((item) => item.id == useRoute().query?.t)) return
     isNewReq.value = true
   } else {
     isNewReq.value = false
@@ -42,14 +44,33 @@ const computedCurrentTabDisplayed = computed(() => {
 
 onMounted(() => {
   console.log('mounted')
+  let hasProject = handleCheckProject()
+  if(!hasProject) return
+
   if (useRoute().query?.t) {
     addRequestTabHeader(useRoute().query?.t)
   }
   setRequestConfig({
-    baseurl: storeData.projectDetails.baseurl
+    baseurl: storeData.projectDetails?.baseurl
   })
 
 })
+
+async function handleCheckProject() {
+  console.log('handleCheckProject', storeData.currentProjectId, storeData.allProjects)
+  if (!storeData.projectDetails) {
+    let createProjectModal = await useModal(CreateNewApp, {
+      options: {
+        background: 'white',
+        width: 1000,
+        type: "modal",
+        blur: false,
+        closable: false,
+      }
+    })
+  }
+  return true
+}
 
 
 

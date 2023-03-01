@@ -1,6 +1,6 @@
 <template>
     <div class=" grid grid-cols-12 h-screen">
-        <DebuggerSidebar class="col-span-2 px-4  border-r-2 " />
+        <DebuggerSidebar class="col-span-2   border-r-2 " />
         <div class="col-span-10 mt-2 max-h-screen overflow-y-auto">
             <!-- <main-header></main-header> -->
             <tabs-topbar class="sticky top-0 bg-white z-30"></tabs-topbar>

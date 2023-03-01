@@ -3,13 +3,13 @@
         <div class="">
             <router-link to="/">
                 <div class="flex items-center mt-6 ml-4">
-                    <img src="../../assets/images/avanda-logo.svg" alt="Logo" class="max-w-[70px]">
-                    <h2 class="grad-text-1 text-2xl font-bold">Debugger</h2>
+                    <img src="../../assets/images/avanda-logo.svg" alt="Logo" class="max-w-[30px] lg:max-w-[70px]">
+                    <h2 class="grad-text-1 text-lg lg:text-2xl font-bold">Debugger</h2>
                 </div>
             </router-link>
             <div class="">
-                <div class="flex justify-between mb-2">
-                    <h3 class="text-md font-semibold text-avanda-grey-dark leading-tight">COREP</h3>
+                <div class="flex justify-between my-2">
+                    <h3 class="text-md font-semibold text-avanda-grey-dark leading-tight">{{storeData.projectDetails?.name?? ''}}</h3>
                     <div class="flex gap-2 ">
                         <add-request-icon text-color="rgba(0, 0, 0, 0.44)" :size="20" class="cursor-pointer"
                             @click="handleNewParentRequest"></add-request-icon>
@@ -24,7 +24,7 @@
                 </form>
             </div>
             <div class="max-h-[80vh] h-[80vh] overflow-y-auto">
-                <side-tree :tree-items="storeData.allFolders"></side-tree>
+                <side-tree :tree-items="storeData.computedAllFolders"></side-tree>
             </div>
         </div>
     </div>

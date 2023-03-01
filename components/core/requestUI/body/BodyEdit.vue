@@ -112,7 +112,7 @@ const handleKeyTypeUpdate = (data: { text: "file" | "text", idx: number }) => {
 
 const addNewBodyFormWhenOthersAreFull = () => {
     const isAllFull = BodyForm.value.every(eachForm => eachForm.key)
-    console.log({ isAllFull, BodyForm })
+    // console.log({ isAllFull, BodyForm })
     if (isAllFull) {
         BodyForm.value.push({
             key: "",
@@ -131,7 +131,7 @@ const updateBodyFormData = (data: { text: string, idx: number } | string, column
         BodyForm.value[data.idx][column] = data.text
     }
     addNewBodyFormWhenOthersAreFull()
-    console.log({ BodyForm })
+    // console.log({ BodyForm })
 }
 
 </script>

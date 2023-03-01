@@ -13,6 +13,7 @@ export const useHandleFolder = () => {
         let objTopush: TreeItem
         if (type === "folder") {
             objTopush = {
+                project_id: storeData.currentProjectId,
                 id: folderOrRequestId,
                 name: name,
                 children: [],
@@ -22,6 +23,7 @@ export const useHandleFolder = () => {
             }
         } else {
             objTopush = {
+                project_id: storeData.currentProjectId,
                 id: folderOrRequestId,
                 fileName: name,
                 parentFolderId: storeData.currentFolderId,
@@ -29,7 +31,7 @@ export const useHandleFolder = () => {
                 name: '',
                 req_type: "get",
             }
-            requestStore.createNewRequest(objTopush)
+            requestStore.createNewRequest(objTopush, storeData.currentFolderId)
         }
         console.log("Obj to push", objTopush)
         storeData.createFolderOrRequest(objTopush,storeData.currentFolderId, type)

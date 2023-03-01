@@ -12,7 +12,7 @@
                 <add-icon></add-icon>
             </div>
             <div class="config border-l px-2 flex items-center gap-4 cursor-pointer" @click="handleClickOnAppConfig">
-                <p class="text-md">Corep - (config)</p>
+                <p class="text-md">{{storeData.projectDetails?.name}} - (config)</p>
                 <down-icon :size="16"></down-icon>
             </div>
         </div>

@@ -115,7 +115,7 @@ const requestsForms = reactive({
 
 const updateFormData = (data: string, column: [key: string]) => {
     requestData.value[column] = data
-    console.log({ requestData })
+    // console.log({ requestData })
 }
 
 </script>
