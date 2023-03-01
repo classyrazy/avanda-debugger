@@ -48,12 +48,12 @@ const storeData = useAppStore();
 const handleNewParentFolder = () => {
     toggleOpenInput()
     createType.value = "folder"
-    console.log("handleNewParentFolder")
+    // console.log("handleNewParentFolder")
 }
 const handleNewParentRequest = () => {
     toggleOpenInput()
     createType.value = "request"
-    console.log("handleNewParentRequest")
+    // console.log("handleNewParentRequest")
 }
 const closeCreateInput = () => {
     displayCreateFolderOrRequestInput.value = false
@@ -66,7 +66,7 @@ let fileName = reactive({
     error: null
 })
 const createFolderOrRequest = (type: createType) => {
-    console.log("createFolderOrRequest", type)
+    // console.log("createFolderOrRequest", type)
     createNewFolderOrRequest(fileName.value, type)
     fileName.value = ""
     closeCreateInput()

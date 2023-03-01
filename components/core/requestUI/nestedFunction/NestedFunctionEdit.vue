@@ -133,7 +133,7 @@ const handleEditNestedFunction = (item: nestedFunctionType, idx: number) => {
     currentFuncToEdit.params = item.params
     currentFuncToEdit.columns = item.columns
     currentFuncToEdit.nestedFunction = item.nestedFunction
-    console.log(requestStore.computedCurrentMainRequest)
+    // console.log(requestStore.computedCurrentMainRequest)
     // editNestedFunction(currentFuncToEdit.id, 'name', currentFuncToEdit.name)
     // console.log(item, nestedFunctions)
 }

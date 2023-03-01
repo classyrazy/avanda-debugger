@@ -50,7 +50,7 @@ let props = defineProps<{
         description: string,
     }[]
 }>()
-console.log(props.item)
+// console.log(props.item)
 let emit = defineEmits(['updateParams'])
 let modelvalues = ref(props.item)
 const handleUpdated = () => {

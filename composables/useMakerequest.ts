@@ -13,14 +13,14 @@ export const useMakerequest = () => {
             baseURL: config.baseurl,
             withCredentials: true,
         })
-        console.log(Graph)
+        // console.log(Graph)
     }
     const testGetRequest = async (service: string, requestId: string) => {
         let req = new Graph().service(service)
         let reqData = await req.get()
         requestStore.findRequestById(requestId, (data: mainRequestType) => {
             data.responseData.data = reqData
-            console.log(reqData)
+            // console.log(reqData)
 
         })
         return reqData
@@ -36,7 +36,7 @@ export const useMakerequest = () => {
 
         requestStore.findRequestById(requestId, (data: mainRequestType) => {
             data.responseData.data = req
-            console.log(req)
+            // console.log(req)
 
         })
         return req
@@ -68,13 +68,13 @@ export const useMakerequest = () => {
             let currentRequesttab = requestObj
             let filteredParams = filterToKeyValue(currentRequesttab?.params ?? [])
             let filteredColumns = filterColumns(currentRequesttab?.columns ?? [])
-            console.log(Object.assign({}, ...filteredParams) ?? {}, "function", currentRequesttab?.nestedFunction)
+            // console.log(Object.assign({}, ...filteredParams) ?? {}, "function", currentRequesttab?.nestedFunction)
             let req = new Graph().service(service)
-            console.log("request befire func", {req})
+            // console.log("request befire func", {req})
 
             function handleInnerNested (el: nestedFunctionType[], req: any, initialColumns: any) {
                 if (el) {
-                    console.log(el, "el", req, "req", initialColumns, "initialColumns")
+                    // console.log(el, "el", req, "req", initialColumns, "initialColumns")
                     for (let j = 0; j < el.length; j++) {
                         let innerEl = el[j]
                         if (j === 0) {
@@ -107,10 +107,10 @@ export const useMakerequest = () => {
                 //     console.log(element, "element", req)
                 //     console.log("i", i, req)
                 // }
-                console.log("request befire func", {req})
+                // console.log("request befire func", {req})
                 req = handleInnerNested(currentRequesttab?.nestedFunction, req, currentRequesttab?.columns)
                 req = req.params(Object.assign({}, ...filteredParams) ?? {})    
-                console.log(req, "test nested function")
+                // console.log(req, "test nested function")
             }else{
                 req = req.fetch(...filteredColumns).params(Object.assign({}, ...filteredParams) ?? {})
             }
@@ -118,7 +118,7 @@ export const useMakerequest = () => {
             let reqData: any = await req.get()
             requestStore.findRequestById(requestId, (data: mainRequestType) => {
                 data.responseData.data = reqData
-                console.log(reqData)
+                // console.log(reqData)
 
             })
             return reqData
@@ -126,13 +126,13 @@ export const useMakerequest = () => {
 
             requestStore.findRequestById(requestId, (data: mainRequestType) => {
                 data.responseData.data = error
-                console.log(error)
+                // console.log(error)
             })
         } finally {
             requestObj.responseData.loading = false
         }
     }
-    const makemainPostRequest = async (requestId: string, service: string, ) => {
+    const makemainPostRequest = async (requestId: string, service: string, requestObj: mainRequestType) => {
         if (!validateService(service)) return
         try {
 
@@ -154,14 +154,14 @@ export const useMakerequest = () => {
             let reqData = await (await req)
             requestStore.findRequestById(requestId, (data: mainRequestType) => {
                 data.responseData.data = reqData
-                console.log(reqData)
+                // console.log(reqData)
 
             })
             return reqData
         } catch (error) {
             requestStore.findRequestById(requestId, (data: mainRequestType) => {
                 data.responseData.data = error
-                console.log(error)
+                // console.log(error)
 
             })
         } finally {
@@ -170,7 +170,7 @@ export const useMakerequest = () => {
         }
     }
     const chooseFunctionToRun = (requestId: string, service: string, type: string) => {
-        console.log("chooseFunctionToRun", requestId, service, type)
+        // console.log("chooseFunctionToRun", requestId, service, type)
         if (!validateService(service)) {
             return
         }
@@ -186,7 +186,7 @@ export const useMakerequest = () => {
         })
     }
     const handleNestedFunction = (nestedObj: nestedFunctionType) => {
-        console.log({ nestedObj })
+        // console.log({ nestedObj })
 
     }
     const filterToKeyValue = (array: any[]) => {

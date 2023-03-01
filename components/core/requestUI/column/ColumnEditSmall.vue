@@ -32,7 +32,7 @@ let props = defineProps<{
         key:string,
     }[]
 }>()
-console.log(props.item)
+// console.log(props.item)
 let emit  = defineEmits(['updateColumns'])
 let modelvalues = ref(props.item)
 const handleUpdated = () => {

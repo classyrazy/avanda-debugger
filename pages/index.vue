@@ -27,7 +27,7 @@ definePageMeta({
 })
 
 let isNewReq = ref(false)
-console.log('hello world', useRoute().query.t)
+// console.log('hello world', useRoute().query.t)
 const computedCurrentTabDisplayed = computed(() => {
   let regex = new RegExp(`new-\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}`)
   if (regex.test(useRoute().query?.t)) {
@@ -43,7 +43,7 @@ const computedCurrentTabDisplayed = computed(() => {
 
 
 onMounted(() => {
-  console.log('mounted')
+  // console.log('mounted')
   let hasProject = handleCheckProject()
   if(!hasProject) return
 
@@ -57,7 +57,7 @@ onMounted(() => {
 })
 
 async function handleCheckProject() {
-  console.log('handleCheckProject', storeData.currentProjectId, storeData.allProjects)
+  // console.log('handleCheckProject', storeData.currentProjectId, storeData.allProjects)
   if (!storeData.projectDetails) {
     let createProjectModal = await useModal(CreateNewApp, {
       options: {

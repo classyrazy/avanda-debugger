@@ -23,7 +23,7 @@ export const useNestedFunction = () => {
         const requestToEdit = findNestedById(nestedFunctionId, requestStore.computedCurrentMainRequest?.nestedFunction  ?? null)
         if(requestToEdit){
             requestToEdit[editKey] = value
-            console.log("Request to edit", requestToEdit, requestStore.computedCurrentMainRequest?.nestedFunction)
+            // console.log("Request to edit", requestToEdit, requestStore.computedCurrentMainRequest?.nestedFunction)
         }
     }
     const createNewNestedFunction = (nestedFunctionId: string|null) => {

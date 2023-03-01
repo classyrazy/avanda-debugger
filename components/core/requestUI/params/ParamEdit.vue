@@ -58,7 +58,7 @@ const paramForm = computed(() => {
 })
 const addNewBodyFormWhenOthersAreFull = () => {
     const isAllFull = paramForm.value.every(eachForm => eachForm.key)
-    console.log({isAllFull})
+    // console.log({isAllFull})
     if (isAllFull) {
         paramForm.value.push({
             key: "",
@@ -72,14 +72,14 @@ const addNewBodyFormWhenOthersAreFull = () => {
 }
 onMounted(() => {
     addNewBodyFormWhenOthersAreFull()
-    console.log(paramForm.value)
+    // console.log(paramForm.value)
 })
 
 const updateFormData = (data: string, column: [key: string], idx: number) => {
 
     paramForm.value[idx][column] = data
     addNewBodyFormWhenOthersAreFull()
-    console.log({ paramForm })
+    // console.log({ paramForm })
 }
 // watch(paramForm, (newVal) => {
 //     requestStore.updateCurrentMainRequest({ params: newVal })

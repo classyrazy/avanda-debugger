@@ -40,7 +40,7 @@ const columnForm = computed(() => {
 })
 const addNewBodyFormWhenOthersAreFull = () => {
     const isAllFull = columnForm.value.every(eachForm => eachForm.key)
-    console.log({isAllFull})
+    // console.log({isAllFull})
     if (isAllFull) {
      columnForm.value.push({
             key: "",
@@ -51,14 +51,14 @@ const addNewBodyFormWhenOthersAreFull = () => {
 }
 onMounted(() => {
     addNewBodyFormWhenOthersAreFull()
-    console.log(columnForm.value)
+    // console.log(columnForm.value)
 })
 
 const updateFormData = (data: string, column: [key: string], idx: number) => {
 
  columnForm.value[idx][column] = data
     addNewBodyFormWhenOthersAreFull()
-    console.log({ columnForm })
+    // console.log({ columnForm })
 }
 // watch columnForm, (newVal) => {
 //     requestStore.updateCurrentMainRequest({ params: newVal })

@@ -24,7 +24,7 @@ export const useCreateNewRequest = () => {
         }
         requestStore.addToNewRequestHeaderTabs(reqHeaderObj)
         useRouter().push({ query: { t: `new-${requestId}` } })
-        console.log(requestStore.requestsHeaderTabs, requestStore.newRequestHeaderstab)
+        // console.log(requestStore.requestsHeaderTabs, requestStore.newRequestHeaderstab)
 
     }
     const addRequestTabHeader = (id: string) => {
@@ -38,7 +38,7 @@ export const useCreateNewRequest = () => {
                     id: requestFetchToAdd.id ?? '',
                     current_req_tab_model: "params"
                 })
-                console.log(requestStore.requestsHeaderTabs, requestStore.newRequestHeaderstab)
+                // console.log(requestStore.requestsHeaderTabs, requestStore.newRequestHeaderstab)
             }
 
     }

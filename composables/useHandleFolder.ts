@@ -33,7 +33,7 @@ export const useHandleFolder = () => {
             }
             requestStore.createNewRequest(objTopush, storeData.currentFolderId)
         }
-        console.log("Obj to push", objTopush)
+        // console.log("Obj to push", objTopush)
         storeData.createFolderOrRequest(objTopush,storeData.currentFolderId, type)
     }
 
@@ -53,7 +53,7 @@ export const useHandleFolder = () => {
     }
 
     const updateCurrentFolder = (id: string) => {
-        console.log(findFolderById(id, allFolders), { id })
+        // console.log(findFolderById(id, allFolders), { id })
         currentFolder.value = id
     }
     // const computedCurrentFolder = computed(() => {

@@ -79,7 +79,7 @@ const store = () => {
         ]
     }])
     const projectDetails = computed(() => {
-        console.log(allProjects, currentProjectId.value)
+        // console.log(allProjects, currentProjectId.value)
         return allProjects.find(project => project.id == currentProjectId.value)
     })
     // const projectDetails = ref<projectDetailType | null>(null)
@@ -93,7 +93,7 @@ const store = () => {
     //     projectDetails.value = project
     // }
     function updateCurrentFolder(id: string) {
-        console.log(findFolderById(id, computedAllFolders.value), { id, allFolders })
+        // console.log(findFolderById(id, computedAllFolders.value), { id, allFolders })
         currentFolderId.value = id
     }
 
@@ -109,13 +109,13 @@ const store = () => {
         const folderOrRequestId = uuidv4()
         if (whereId) {
             let locationFolder = findFolderById(whereId, computedAllFolders.value)
-            console.log(locationFolder)
+            // console.log(locationFolder)
             locationFolder?.children?.push(objectTosave)
 
         } else {
             allFolders.push(objectTosave)
         }
-        console.log(allFolders)
+        // console.log(allFolders)
         if (type === "folder") {
             updateCurrentFolder(objectTosave.id ?? '')
         } else {

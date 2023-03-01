@@ -73,7 +73,7 @@ const handleNodeClick = () => {
 }
 watch(currentTabId, (val) => {
     if (val == props.node.id) {
-        console.log("watching and updating")
+        // console.log("watching and updating")
         storeData.updateCurrentFolder(props.node.parentFolderId ?? '')
     }
 })
