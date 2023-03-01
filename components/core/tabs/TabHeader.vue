@@ -1,5 +1,5 @@
 <template>
-    <div class="border-r border-l py-1 px-2 flex items-center gap-4 cursor-pointer" :class="currentTabId == id ? 'border-t-4 border-t-main-purple':''" @click="useRouter().push({query:{t: `${id}`}})">
+    <div class="border-r border-l py-1 px-2 flex items-center gap-4 cursor-pointer" :class="currentTabId == id ? 'border-t-2 border-t-main-purple':''" @click="useRouter().push({query:{t: `${id}`}})">
         <div class="flex items-center gap-2">
             <span class="text-md font-semibold" :class="`text-${computedRequestType?.color}`">{{computedRequestType?.name}}</span>
             <span class="text-xl">·</span>

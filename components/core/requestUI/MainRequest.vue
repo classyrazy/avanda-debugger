@@ -36,7 +36,7 @@
                     <div class="w-full flex justify-center items-center" v-if="currentRequestResponseData?.loading">
                         <loader-icon class="" :size="50"></loader-icon>
                     </div>
-                    {{ currentRequestResponseData?.loading }}
+                    <!-- {{ currentRequestResponseData?.loading }} -->
                 </div>
             </div>
         </section>
@@ -64,7 +64,7 @@ import 'vue-json-pretty/lib/styles.css';
 const storeData = useAppStore();
 const requestStore = useRequestStore()
 
-let currentRequestInnerTab = ref('params')
+let currentRequestInnerTab = ref('columns')
 const computedCurrentTabDisplayed = computed(() => {
     return currentRequestInnerTab.value
 })

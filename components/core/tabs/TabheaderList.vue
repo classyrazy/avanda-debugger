@@ -7,7 +7,7 @@
                 :request-type="newRequest.type" :name="newRequest.fileName" :id="newRequest.id" newTab></tab-header>
         </div>
         <div class="ml-auto pl-4 flex gap-4 items-center">
-            <div class="w-10 h-10 flex justify-center items-center cursor-pointer hover:bg-gray-200 rounded-full"
+            <div class="w-8 h-8 flex justify-center items-center cursor-pointer hover:bg-gray-200 rounded-full"
                 @click="createNewRequest('New Request', 'get', storeData.currentFolderId)">
                 <add-icon></add-icon>
             </div>

@@ -5,6 +5,7 @@ import { useAppStore } from "~~/store/app";
 import { mainRequestType } from "~~/utils/types/mainRequestType";
 import { useAlert } from "./useToast";
 import { nestedFunctionType } from "~~/utils/types/nestedFunctionType";
+import axios from "axios";
 export const useMakerequest = () => {
     const requestStore = useRequestStore()
     const storeData = useAppStore()
@@ -13,6 +14,7 @@ export const useMakerequest = () => {
             baseURL: config.baseurl,
             withCredentials: true,
         })
+        
         // console.log(Graph)
     }
     const testGetRequest = async (service: string, requestId: string) => {
@@ -114,7 +116,6 @@ export const useMakerequest = () => {
             }else{
                 req = req.fetch(...filteredColumns).params(Object.assign({}, ...filteredParams) ?? {})
             }
-
             let reqData: any = await req.get()
             requestStore.findRequestById(requestId, (data: mainRequestType) => {
                 data.responseData.data = reqData

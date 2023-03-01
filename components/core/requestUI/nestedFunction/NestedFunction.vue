@@ -77,7 +77,7 @@ let nestedFunctInnerTabs: { [key: string]: object } = {
 type nestedFunctInnerTabsTypes = "params" | "columns"
 
 let nestedFunctionOpen = ref(false)
-let currentTab = ref<nestedFunctInnerTabsTypes>("params")
+let currentTab = ref<nestedFunctInnerTabsTypes>("columns")
 let computedComponentProps = computed(() => {
     let propsToset = {
         params: modelValues.value.params,
