@@ -181,7 +181,7 @@ export const useMakerequest = () => {
             if (type === "get") {
                 makeMainGetRequest(requestId, service, data)
             } else if (type === "post") {
-                makemainPostRequest(requestId, service)
+                makemainPostRequest(requestId, service, data)
             }
         })
     }
