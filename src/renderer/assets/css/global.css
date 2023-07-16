@@ -1,0 +1,49 @@
+.grad-text-1 {
+    background: linear-gradient(180deg, #6D28D9 0%, #D939CD 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+}
+
+::-webkit-scrollbar {
+    width: 0.4em;
+    max-height: 0.2rem;
+}
+ 
+::-webkit-scrollbar-thumb {
+  background-color: var(--avanda-grey-dark);
+  border-radius: 20px;
+}
+.text-post{
+  color: var(--post-request-yellow);
+}
+.text-get{
+  color: var(--get-request-green);
+}
+
+.requestoption li.nav-link {
+  display: inline-block;
+  position: relative;
+  /* margin: auto; */
+}
+
+.requestoption li.nav-link::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  margin-left: auto;
+  margin-right: auto;
+  transform: scaleX(0);
+  height: 2px;
+  bottom: -3px;
+  left: 0;
+  background: var(--main-purple);
+  transform-origin: bottom center;
+  transition: transform 0.01s ease-out;
+}
+
+.requestoption li.nav-link.active:after {
+  transform: scaleX(1);
+  transform-origin: bottom center;
+}

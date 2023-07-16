@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&family=Raleway:ital,wght@0,300;0,500;0,600;0,700;0,800;1,300;1,400;1,500;1,600;1,700&display=swap');
+@import url('./variables.css');
+@import url('./global.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --primary: #000000;
+        --secondary: #92dce5;
+        --avanda-grey: #F9F9F9;
+        --avanda-grey-dark: rgba(0, 0, 0, 0.44);
+        --main-purple: #4B2A6B;
+        --light-purple: #BA68C8;
+        --get-request-green: #06c125;
+        --post-request-yellow: #FFD384;
+    }
+}

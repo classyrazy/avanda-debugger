@@ -1,0 +1,10 @@
+:root{
+    --primary: #000000;
+    --secondary: #92dce5;
+    --avanda-grey: #F9F9F9;
+    --avanda-grey-dark:rgba(0, 0, 0, 0.44);
+    --main-purple: #4B2A6B;
+    --light-purple: #BA68C8;
+    --get-request-green: #06c125;
+    --post-request-yellow: #FFD384;
+}
