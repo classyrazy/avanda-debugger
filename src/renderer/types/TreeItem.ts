@@ -5,7 +5,7 @@ type TreeItem = {
     id: string,
     name: string,
     children?: TreeItem[],
-    isFolderEmpty: boolean,
+    isFolderEmpty?: boolean,
     parentFolderId?: string | null,
     type: fileStruct,
     req_type?: requestType ,

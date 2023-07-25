@@ -28,6 +28,7 @@
     "click-outside-vue3": "^4.0.1",
     "fs": "^0.0.1-security",
     "vue": "^3.2.47",
+    "vue-resizer": "^1.1.9",
     "vue-router": "^4.2.4"
   }
 }

@@ -1,2 +1,2 @@
-type requestType = "get" | "post" | "put" | "delete" | "patch";
+type requestType = "get" | "post" | "delete" | "watchable";
 export default requestType;

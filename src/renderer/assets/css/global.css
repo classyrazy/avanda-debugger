@@ -5,6 +5,12 @@
     background-clip: text;
     text-fill-color: transparent;
 }
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    user-select: none;
+}
 
 ::-webkit-scrollbar {
     width: 0.4em;
@@ -20,6 +26,12 @@
 }
 .text-get{
   color: var(--get-request-green);
+}
+.text-delete{
+  color: var(--delete-request-red);
+}
+.text-watchable{
+  color: var(--watchable-request-blue);
 }
 
 .requestoption li.nav-link {
@@ -46,4 +58,7 @@
 .requestoption li.nav-link.active:after {
   transform: scaleX(1);
   transform-origin: bottom center;
+}
+.drager_bottom{
+    padding-top: 0px !important;
 }

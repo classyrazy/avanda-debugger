@@ -15,6 +15,8 @@ module.exports = {
         "light-purple": 'var(--light-purple)',
         "get-request": "#06c125",
         "post-request": 'var(--post-request-yellow)',
+        "delete-request": 'var(--delete-request-red)',
+        "watchable-request": 'var(--watchable-request-blue)',
 
       },
       fontFamily: {

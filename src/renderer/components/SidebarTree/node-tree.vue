@@ -8,7 +8,7 @@
             <v-tooltip :label="node.name" @label-click="handleNodeClick"
                 :class="node.type === 'folder' ? '' : 'pl-6'"
                 d-menu-styles="border shadow-md"
-                :dc-con-styles="node.type === 'request' && currentTabId == node.id ? 'bg-purple-200' : ''">
+                :dc-con-styles="node.type === 'request' && currentRequestId == node.id ? 'bg-purple-200' : ''">
                 <ul class="max-h-[200px] overflow-y-auto"
                     v-if="node.type === 'folder'">
                     <li class="block w-full text-sm cursor-pointer hover:bg-[#eee] rounded-md mt-2 p-2"
@@ -23,7 +23,7 @@
                     <li class="block w-full text-sm cursor-pointer hover:bg-[#eee] rounded-md mt-1 p-1"
                         v-for="(item, idx) in requestOptions" tabindex="0" :key="idx">
                         <div class="flex items-center">
-                            <span class="text-xs">{{ item.label }}</span>
+                            <span class="text-xs"> {{ item.label }}</span>
                         </div>
                         <!-- {{item.name}} -->
                     </li>
@@ -42,30 +42,21 @@ import NodeTree from './node-tree.vue'
 import VTooltip from '../core/forms/v-tooltip.vue'
 import ToggleSideOpenIcon from '../icons/toggle-side-open-icon.vue'
 import TreeItem from '../../types/TreeItem'
-import {folderOptions, requestOptions} from "../../composables/useFolder"
+import {folderOptions, requestOptions,} from "../../composables/useFolder"
+import { currentTabId } from '../../composables/request/useRequestTabs'
 import { ref } from 'vue';
-// import VTooltip from '../../core/forms/v-tooltip.vue'
-// import ToggleSideOpenIcon from '../../icons/toggle-side-open-icon.vue'
-// import NodeTree from './node-tree.vue'
-// import { useAppDataOption } from '~~/composables/useAppDataOptions';
-// import { useAppStore } from "~~/store/app";
-// import { useRequestStore } from "~~/store/request";
-// import { useCreateNewRequest } from '~~/composables/useCreateNewrequest';
-// import TreeItem from '~~/utils/types/TreeItem';
-// const storeData = useAppStore();
-// const requestStore = useRequestStore();
+import { useRouter } from 'vue-router'
+import { useFolder } from '../../composables/useFolder'
+import { currentRequestId } from '../../composables/request/useRequest'
+import { useRequestTabs } from '../../composables/request/useRequestTabs'
 interface Props {
     node: TreeItem
 }
 let props = defineProps<Props>();
+const router = useRouter()
 
-
-
-
-
-
-// let { collectionOption, requestOption } = useAppDataOption()
-// const { addRequestTabHeader } = useCreateNewRequest()
+const {handleUpdateCurrentFolderId} = useFolder()
+const {addTabToRequestTabs} = useRequestTabs()
 let toggleOpenFolder = ref<boolean>(false)
 let handleToggleOpenFolder = () => {
     toggleOpenFolder.value = !toggleOpenFolder.value
@@ -74,15 +65,16 @@ let handleToggleOpenFolder = () => {
 //     requestStore.setcurrentRequestheaderId(useRoute().query.t ?? '')
 //     return useRoute().query.t
 // })
-// const handleNodeClick = () => {
-//     if (props.node.type === 'folder') {
-//         storeData.updateCurrentFolder(props.node.id ?? '')
-//         return
-//     }
-//     // storeData.updateCurrentFolder(props.node.parentFolderId ?? props.node.id ?? '')
-//     addRequestTabHeader(props.node.id)
-//     useRouter().push({ query: { t: props.node.id } })
-// }
+const handleNodeClick = () => {
+    console.log("node clicked")
+    if (props.node.type === 'folder') {
+        handleUpdateCurrentFolderId(props.node.id ?? '')
+        return
+    }else{
+
+        router.push({ query: { t: props.node.id } })
+    }
+}
 // watch(currentTabId, (val) => {
 //     if (val == props.node.id) {
 //         // console.log("watching and updating")

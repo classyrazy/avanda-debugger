@@ -9,14 +9,14 @@
                 <div class="flex justify-between my-2 px-2">
                     <h3 class="text-md font-semibold text-avanda-grey-dark leading-tight text-ellipsis overflow-hidden">{{projectDetails?.name?? ''}}</h3>
                     <div class="flex gap-2 ">
-                        <add-request-icon text-color="rgba(0, 0, 0, 0.44)" :size="20" class="cursor-pointer"></add-request-icon>
+                        <add-request-icon text-color="rgba(0, 0, 0, 0.44)" :size="20" class="cursor-pointer" @click="handleCreateNewRequestTab"></add-request-icon>
                         <add-collection-icon text-color="rgba(0, 0, 0, 0.44)" :size="20" class="cursor-pointer"
                         @click="handleFolderIconClick('folder')"></add-collection-icon>
                     </div>
                 </div>
-                <form @submit.prevent="handleCreateFolder('folder')">
-                    <v-input :placeholder="`New Request Folder`" v-if="displayCreateFolderInput"
-                        v-click-outside="closeCreateInput" :value="fileName" class="text-sm rounded-sm" autofocus type="text" size="small" full
+                <form @submit.prevent="handleCreateFolder('folder')" v-if="displayCreateFolderInput">
+                    <v-input :placeholder="`New Request Folder`" auto-focus-input
+                        v-click-outside="closeCreateInput" :value="fileName" class="text-sm rounded-sm" type="text" size="small" full
                         style-type="avanda-create-file-input"></v-input>
                 </form>
             </div>
@@ -33,29 +33,41 @@ import AddCollectionIcon from './icons/add-collection-icon.vue'
 import AddRequestIcon from './icons/add-request-icon.vue'
 import VInput from './core/forms/v-input.vue'
 import {useFolder,allFolders} from "../composables/useFolder"
-import { reactive, ref } from 'vue'
+import { nextTick, reactive, ref, watch } from 'vue'
 import { fileStruct } from '../types/fileStruct'
+import { newRequestsTabs, useRequestTabs } from '../composables/request/useRequestTabs'
+import { useRouter } from 'vue-router'
 const projectDetails = {id:"64ade9f7-43c7-4a8b-bae2-cc1b7f7f44e9",name:"new-avanda-test-1",baseurl:"",description:"","environs":[]}
 let displayCreateFolderInput = ref(false)
+
+const router = useRouter()
 const closeCreateInput = () => {
     displayCreateFolderInput.value = false
 }
 let fileName = reactive({
     value: "",
-    error: null
+    error: null as string | null,
 })
 function handleFolderIconClick(type: fileStruct){
     fileName.value = ""
     toggleOpenInput()
+
 }
-const {createNewFolderOrRequest} = useFolder()
+const {createNewFolder} = useFolder()
+const { createNewRequestTab } = useRequestTabs()
+
 const toggleOpenInput = () => {
     displayCreateFolderInput.value = !displayCreateFolderInput.value
 }
 const handleCreateFolder = (type: fileStruct) => {
-    createNewFolderOrRequest(fileName.value, type)
+    createNewFolder(fileName.value, type)
     fileName.value = ""
     closeCreateInput()
+}
+function handleCreateNewRequestTab() {
+    if(newRequestsTabs.length !== 0) return
+    const requestId = createNewRequestTab()
+    router.push({ query: { t: requestId } })
 }
 </script>
 

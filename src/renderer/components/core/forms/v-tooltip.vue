@@ -1,5 +1,5 @@
 <template>
-    <div class=" relative w-full dropdown-main-con" tabindex="0" @keydown.enter="handleDropdown()"
+    <div class=" relative w-full dropdown-main-con" tabindex="0" @keydown.enter="handleDropdown()" @click="$emit('labelClick')"
         @keydown.esc="closeDropDown()" :class="[dcConStyles]" v-click-outside="closeDropDown">
         <div class=" flex justify-between items-center cursor-pointer"
             :class="[error ? 'border-red-100' : '', useDefaultStyles ? 'border-gray-100 border-2 rounded-lg p-2' : dcToggleStyles]">

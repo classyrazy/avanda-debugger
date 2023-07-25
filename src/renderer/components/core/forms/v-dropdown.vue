@@ -102,10 +102,5 @@ export default {
 </script>
 
 <style scoped>
-.truncate {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    user-select: none;
-}
+
 </style>

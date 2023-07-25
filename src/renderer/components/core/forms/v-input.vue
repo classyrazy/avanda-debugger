@@ -2,7 +2,7 @@
     <div :class="full ? 'w-full' : ''">
         <label v-if="label" class="font-inter text-xl mb-2">{{ label }}</label>
         <div class="relative py-1">
-            <input v-bind="$attrs" :class="[__class, iconLeft ? 'pl-10' : '',]" :type="type" v-model="value.value"
+            <input v-bind="$attrs" :class="[__class, iconLeft ? 'pl-10' : '',]" :type="type" v-model="value.value" ref="input"
                 class="inline-block appearance-none"
                 @keyup="$emit('customChange', value.value)" />
             <component v-if="_icon" @click="iconClicked" :is="_icon" :size="22" :text-color="iconColor"
@@ -20,7 +20,7 @@
 </template>
 
 <script lang="ts">
-import { computed, ref, watchEffect } from "vue";
+import { computed, onMounted, ref, watchEffect } from "vue";
 
 export default {
     inheritAttrs: false,
@@ -28,7 +28,7 @@ export default {
     },
     props: {
         value: {
-            type: String,
+            type: Object ,
             default: () => ({
                 error: null,
                 value: null,
@@ -43,6 +43,7 @@ export default {
         size: {
             type: String,
             default: "medium",
+            requied: false,
         },
         full: {
             type: Boolean,
@@ -63,8 +64,13 @@ export default {
             type: String,
             default: "#ffffff",
         },
+        autoFocusInput: {
+            type: Boolean,
+            default: false,
+        },
     },
     setup(props, context) {
+        const input = ref<HTMLInputElement | null>(null)
         let styleTypes = {
             "grey-pry":
                 "bg-[#DCDCDC] rounded-2xl text-black focus:border-pry border-2 border-[#DCDCDC] rounded-lg",
@@ -73,7 +79,7 @@ export default {
             "modal-search": "bg-[#fff] dark:bg-db text-black focus:border-pry border-b-0 border-gray-100 p-0 pb-1",
             "avanda-grey-input": "bg-transparent border-none",
             "avanda-create-file-input": "bg-transparent border border-gray-100 p-1",
-            "avanda-create-file-name-input": "bg-avanda-grey border border-gray-100 p-1 ",
+            "avanda-create-file-name-input": "bg-avanda-grey border border-gray-100 p-1 rounded-md",
             "avanda-create-project-name-input": "bg-avanda-grey border p-1 ",
         };
         let base = "";
@@ -118,11 +124,17 @@ export default {
             //   type.value = "password";
             // }
         }
+        onMounted(() => {
+            if (props.autoFocusInput) {
+                input.value?.focus();
+            }
+        })
         return {
             type,
             __class,
             _icon,
             iconClicked,
+            input
         };
     },
 };
