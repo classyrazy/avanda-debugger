@@ -40,7 +40,7 @@
                         </li>
                     </ul>
                     <div class="absolute right-[0] top-2">
-                    <button class="text-avanda-grey-dark cursor-pointer" type="button"><delete-icon class="w-6"></delete-icon></button>
+                    <button class="text-avanda-grey-dark cursor-pointer" type="button" @click="handleDeleteParam(idx)"><delete-icon class="w-6"></delete-icon></button>
                     </div>
                 </div>
 
@@ -53,11 +53,9 @@
 // @ts-ignore
 import DeleteIcon from '../../../icons/delete-icon.vue'
 import { computed, onMounted } from 'vue';
-import { currentRequest, useRequest,currentRequestId } from '../../../../composables/request/useRequest';
+import { currentRequest } from '../../../../composables/request/useRequest';
+import {createNewParam, handleDeleteParam} from '../../../../composables/request/params';
 
-
-
-const { createNewParam } = useRequest()
 const paramForm = computed(() => {
     return currentRequest.value?.params || []
 })
@@ -65,13 +63,16 @@ const addNewBodyFormWhenOthersAreFull = () => {
     const isAllFull = paramForm.value.every(eachForm => eachForm.key) || paramForm.value.length === 0
     console.log({ isAllFull })
     if (isAllFull) {
-        createNewParam(currentRequest.value?.id ?? '')
+        createNewParam()
     }
 }
 
 const handleCreateParams =() => {
     addNewBodyFormWhenOthersAreFull()
 }
+onMounted(() => {
+    addNewBodyFormWhenOthersAreFull()
+})
 </script>
 
 <style scoped></style>

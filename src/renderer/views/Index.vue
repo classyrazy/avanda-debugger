@@ -6,7 +6,7 @@
         </p>
     </div>
     <section class=" grid grid-cols-10">
-        <debugger-sidebar class="col-span-2   border-r-2 " />
+        <debugger-sidebar class="col-span-2 pb-3 border-r-2 " />
         <div class="col-span-8 max-h-screen overflow-y-auto">
             <tabs-topbar class="sticky top-0 bg-white z-30"></tabs-topbar>
             <div class="" v-if="true">
@@ -27,7 +27,7 @@ import DebuggerSidebar from '../components/DebuggerSidebar.vue'
 import { computed, ref, markRaw, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { newRequestsTabs, currentTabId, useRequestTabs,requestTabs } from '../composables/request/useRequestTabs'
-import { requests } from '../composables/request/useRequest'
+import { currentRequestId, requests } from '../composables/request/useRequest'
 import NewRequest from '../components/NewRequest.vue'
 import MainRequest from '../components/MainRequest.vue'
 
@@ -38,9 +38,9 @@ let isNewReq = ref(false)
 const  {addTabToRequestTabs} = useRequestTabs()
 const computedCurrentTabDisplayed = computed(() => {
     let regex = new RegExp(`new-\\w{8}-\\w{4}-\\w{4}-\\w{4}-\\w{12}`)
-    const query = useRoute().query?.t as string
+    const query = route.query?.t as string
     if (regex.test(query)) {
-        if (!newRequestsTabs.find((item) => item.id == useRoute().query?.t)) return
+        if (!newRequestsTabs.find((item) => item.id == route.query?.t)) return
         isNewReq.value = true
     } else {
         isNewReq.value = false
@@ -48,9 +48,11 @@ const computedCurrentTabDisplayed = computed(() => {
     return isNewReq.value ? markRaw(NewRequest) : markRaw(MainRequest)
 })
 watch(() => route.query.t, (val) => {
+    console.log({currentRequestId: currentRequestId.value, test: router.currentRoute.value})
     console.log({val})
-    const foundRequestBasedOnRoute = requests.find((item) => item.id == val)
-    const foundRequestBasedOnRouteInwRequestTabs = requestTabs.find((item) => item.id == val)
+    currentRequestId.value = val as string
+    const foundRequestBasedOnRoute = requests.value.find((item) => item.id == val)
+    const foundRequestBasedOnRouteInwRequestTabs = requestTabs.value.find((item) => item.id == val)
     if (!foundRequestBasedOnRoute || foundRequestBasedOnRouteInwRequestTabs) {
         return
     }

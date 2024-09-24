@@ -72,11 +72,11 @@ let types = {
         text: ''
     },
     bordered: {
-        __class: 'bd-px bd-c-white bg-transparent txt-c-white',
+        __class: 'border border-white bg-transparent txt-c-white',
         text: ''
     },
     bordered_black: {
-        __class: 'bd-px bd-c-black-10 bg-white txt-c-black',
+        __class: 'border border-black-10 bg-white text-black',
         text: ''
     },
     sec: {

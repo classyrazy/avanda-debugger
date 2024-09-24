@@ -1,24 +1,26 @@
 <template>
-     <aside class="h-[95vh]  bg-avanda-grey overflow-x-hidden py-1">
+     <aside class="h-[95vh]  bg-avanda-grey overflow-x-hidden">
         <div class="">
-                <div class="flex items-center border-b sticky top-0">
+                <div class="flex items-center border-b sticky top-0 justify-center h-[45px]">
                     <img src="../../assets/images/avanda-logo.svg" alt="Logo" class="max-w-[30px] lg:max-w-[50px]">
                     <h2 class="grad-text-1 text-lg font-semibold font-inter">Debugger</h2>
                 </div>
             <div class="sticky top-[50px]">
                 <div class="flex justify-between my-2 px-2">
-                    <h3 class="text-md font-semibold text-avanda-grey-dark leading-tight text-ellipsis overflow-hidden">{{projectDetails?.name?? ''}}</h3>
+                    <h3 class="text-md font-semibold text-avanda-grey-dark leading-tight text-ellipsis overflow-hidden capitalize truncate">{{projectDetails?.name?? ''}}</h3>
                     <div class="flex gap-2 ">
                         <add-request-icon text-color="rgba(0, 0, 0, 0.44)" :size="20" class="cursor-pointer" @click="handleCreateNewRequestTab"></add-request-icon>
                         <add-collection-icon text-color="rgba(0, 0, 0, 0.44)" :size="20" class="cursor-pointer"
                         @click="handleFolderIconClick('folder')"></add-collection-icon>
                     </div>
                 </div>
-                <form @submit.prevent="handleCreateFolder('folder')" v-if="displayCreateFolderInput">
+                <transition name="fromBottom">
+                    <form @submit.prevent="handleCreateFolder('folder')" v-if="displayCreateFolderInput" class="px-2">
                     <v-input :placeholder="`New Request Folder`" auto-focus-input
-                        v-click-outside="closeCreateInput" :value="fileName" class="text-sm rounded-sm" type="text" size="small" full
+                        v-click-outside="closeCreateInput" :value="fileName" class="text-sm rounded-md p-2 border-primary" type="text" size="small" full
                         style-type="avanda-create-file-input"></v-input>
                 </form>
+                </transition>
             </div>
             <div class="max-h-[80vh] h-[80vh] overflow-y-auto">
                 <side-tree :tree-items="allFolders"></side-tree>

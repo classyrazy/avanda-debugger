@@ -6,17 +6,19 @@ import router from "../../router"
 import requestType from "../../types/requestType"
 import { currentRequestId, currentRequest } from "./useRequest"
 import { requestInnerTabs } from "../../types/appStyleTypes"
+import { useStorage } from "@vueuse/core"
 
 
-export const requestTabs = reactive<RequestTabType[]>([])
+// export const requestTabs = reactive<RequestTabType[]>([])
+export const requestTabs = useStorage<RequestTabType[]>("requestTabs", [])
 export let newRequestsTabs = reactive<RequestTabType[]>([])
 export const currentTabId = ref("")
 export const currentTab = computed(() => {
-    const tab = requestTabs.find(tab => tab.id === currentRequestId.value)
+    const tab = requestTabs.value.find(tab => tab.id === currentRequestId.value)
     return tab 
 })
 export const currentTabType = computed(() => {
-    const tab = requestTabs.find(tab => tab.id === currentRequestId.value)
+    const tab = requestTabs.value.find(tab => tab.id === currentRequestId.value)
     return tab?.type || "get"
 })
 export const useRequestTabs = () => {
@@ -27,7 +29,7 @@ export const useRequestTabs = () => {
             type: "get",
             current_req_tab_model: "params"
         }
-        requestTabs.push(obj)
+        requestTabs.value.push(obj)
     }
     function createNewRequestTab() {
         const requestId = uuidv4()
@@ -39,29 +41,30 @@ export const useRequestTabs = () => {
         }
         if (newRequestsTabs.length !== 0) return
         newRequestsTabs.push(reqHeaderObj)
-        console.log({ requestId }, useRoute())
+        currentRequestId.value = reqHeaderObj.id
         return reqHeaderObj.id
     }
     function handleUpdateCurrentTabId(id: string) {
+        currentRequestId.value = id
         router.push({ query: { t: id } })
         currentTabId.value = id
     }
     function removeTabFromTabs(id: string, requestTabType: 'new' | 'old') {
         if (requestTabType === 'new') {
             newRequestsTabs.splice(0, 1)
-            let lastItem = requestTabs[requestTabs.length - 1]
+            let lastItem = requestTabs.value[requestTabs.value.length - 1]
             if (lastItem) {
                 handleUpdateCurrentTabId(lastItem.id)
             }
         }
         else {
-            const index = requestTabs.findIndex(tab => tab.id === id)
-            requestTabs.splice(index, 1)
-            if (requestTabs.length === 0) {
+            const index = requestTabs.value.findIndex(tab => tab.id === id)
+            requestTabs.value.splice(index, 1)
+            if (requestTabs.value.length === 0) {
                 handleUpdateCurrentTabId("")
                 return
             }
-            handleUpdateCurrentTabId(requestTabs[index - 1].id || requestTabs[requestTabs.length - 1].id)
+            handleUpdateCurrentTabId(requestTabs.value[index - 1].id || requestTabs[requestTabs.length - 1].id)
         }
     }
     function addTabToRequestTabs(name: string, requestId: string,requestType:requestType = "get") {
@@ -74,19 +77,19 @@ export const useRequestTabs = () => {
         }
         const index = newRequestsTabs.findIndex(tab => tab.id === requestId)
         if (index !== -1) return
-        requestTabs.push(reqHeaderObj)
+        requestTabs.value.push(reqHeaderObj)
         console.log({ requestId }, requestTabs)
     }
     function handleUpdateCurrentInnerTab(tab: requestInnerTabs) {
-        const index = requestTabs.findIndex(tab => tab.id === currentRequestId.value)
+        const index = requestTabs.value.findIndex(tab => tab.id === currentRequestId.value)
         if (index === -1) return
-        requestTabs[index].current_req_tab_model = tab
+        requestTabs.value[index].current_req_tab_model = tab
     }
     function handleUpdateTabHeaderRequestType(reqId: string,type: requestType) {
         console.log({reqId,type})
-        const index = requestTabs.findIndex(tab => tab.id === reqId)
+        const index = requestTabs.value.findIndex(tab => tab.id === reqId)
         if (index === -1) return
-        requestTabs[index].type = type
+        requestTabs.value[index].type = type
     }
 
     return {

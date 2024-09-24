@@ -23,7 +23,7 @@
                         </li>
                     </ul>
                     <div class="absolute right-[0] top-2">
-                    <button class="text-avanda-grey-dark cursor-pointer" type="button"><delete-icon class="w-6"></delete-icon></button>
+                    <button class="text-avanda-grey-dark cursor-pointer" type="button" @click="handleDeleteColumns(idx)"><delete-icon class="w-6"></delete-icon></button>
                     </div>
                 </div>
 
@@ -36,22 +36,25 @@
 // @ts-ignore
 import DeleteIcon from '../../../icons/delete-icon.vue'
 import { computed, onMounted } from 'vue';
-import { currentRequest, useRequest,currentRequestId } from '../../../../composables/request/useRequest';
-const { createNewColumn, currentRequestTest } = useRequest()
+import { currentRequest } from '../../../../composables/request/useRequest';
+import {createNewColumn, handleDeleteColumns } from '../../../../composables/request/columns';
 const columnForm = computed(() => {
     return currentRequest.value?.columns || []
 })
 const addNewBodyFormWhenOthersAreFull = () => {
-    const isAllFull = columnForm.value.every(eachForm => eachForm.key) || columnForm.value.length === 0
+    const isAllFull = currentRequest.value?.columns.every(eachForm => eachForm.key) || columnForm.value.length === 0
     console.log({ isAllFull })
     if (isAllFull) {
-        createNewColumn(currentRequest.value?.id ?? '')
+        createNewColumn()
     }
 }
 
 const handleCreateColumns =() => {
     addNewBodyFormWhenOthersAreFull()
 }
+onMounted(() => {
+    addNewBodyFormWhenOthersAreFull()
+})
 </script>
 
 <style scoped></style>

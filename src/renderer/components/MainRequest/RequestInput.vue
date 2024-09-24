@@ -16,11 +16,11 @@
                     <template #default>
                         <ul class="max-h-[200px] overflow-y-auto" v-if="requestsTypeAvailable">
                             <li class="block w-full text-sm cursor-pointer hover:bg-[#eee] rounded-md mt-2 p-2"
-                                @click="handleChosenFromDropdown(item)"
-                                v-for="(item, idx) in requestsTypeAvailable" tabindex="0" :key="idx">
+                                @click="handleChosenFromDropdown(item)" v-for="(item, idx) in requestsTypeAvailable"
+                                tabindex="0" :key="idx">
                                 <span class="text-xs uppercase font-semibold" :class="`text-${item.color}`">{{
                                     item.name
-                                }}</span>
+                                    }}</span>
                             </li>
                         </ul>
                     </template>
@@ -31,46 +31,43 @@
                         type="text" v-model="reqData.serviceName">
                 </div>
             </div>
-            <v-button type="pry" class="w-auto" @click="chooseFunctionToRun(requestStore.computedCurrentMainRequest?.id ?? '', requestData.serviceName, requestData.type)">Send</v-button>
-            <!-- <v-button type="pry" class="w-auto">Nested Function</v-button> -->
+            <v-button type="bordered_black" size="small">
+                <CodeIcon />
+            </v-button>
+            <v-button type="pry" class="w-auto px-6" size="small"
+                @click="handleCallService(currentRequest)">Send</v-button>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
+import CodeIcon from '../icons/code-icon.vue'
 // @ts-ignore
 import VDropdown from '../core/forms/v-dropdown.vue'
 // @ts-ignore
 import VButton from '../core/forms/v-button.vue'
-import { computed, reactive, ref } from 'vue';
-import {requestsTypeAvailable} from "../../composables/request/useRequest"
+import { computed, ref } from 'vue';
+import { requestsTypeAvailable } from "../../composables/request/useRequest"
 import { currentRequest, useRequest } from '../../composables/request/useRequest';
 import requestType from '../../types/requestType';
+import { handleCallService } from '../../composables/request/useServiceCaller';
 
-// interface Props {
-//     currentrequestTypeProp: requestType
-// }
-// const props = defineProps<Props>()
-// const {testGetRequest, testGetNestedRequestFunction, chooseFunctionToRun} = useMakerequest()
-// const currentRequest = computed(() => requestStore.computedCurrentMainRequest)
+
 let requestDropdownType = ref(false)
-// let serviceLinkDropDownType = ref(false)
-// // const currentRequestType = ref(props.currentrequestTypeProp ?? 'get')
-// const currentRequestType = ref<requestType>(requestStore.computedCurrentMainRequest?.requestData.type ?? 'get')
 const requestData = computed(() => {
     return {
-        type: 'get',
+        type: 'get' as requestType,
         name: '',
         serviceName: ''
     }
 })
 const reqData = computed(() => {
-   if(currentRequest.value){
-         return currentRequest.value.requestData
-   }
+    if (currentRequest.value) {
+        return currentRequest.value.requestData
+    }
     return requestData.value
 })
-const {updateRequestType} =useRequest()
+const { updateRequestType } = useRequest()
 
 function handleDropDown() {
     requestDropdownType.value = !requestDropdownType.value;
@@ -79,28 +76,13 @@ function handleCloseDropDown() {
     requestDropdownType.value = false;
 }
 
-function handleChosenFromDropdown(item: { name: requestType, color: string}) {
-    updateRequestType(currentRequest.value?.id ?? "",item.name)
+function handleChosenFromDropdown(item: { name: requestType, color: string }) {
+    updateRequestType(currentRequest.value?.id ?? "", item.name)
     handleCloseDropDown()
 }
 const computedRequestBasedOnString = computed(() => {
     return requestsTypeAvailable.find((item) => item.name === currentRequest.value?.requestData.type)
 })
-// const requestsForms = reactive({
-//     serviceName: {
-//         value: requestData.value.serviceName,
-//         error: null
-//     },
-//     name: {
-//         value: requestData.value.name,
-//         error: null
-//     }
-// })
-
-// const updateFormData = (data: string, column: [key: string]) => {
-//     requestData.value[column] = data
-//     // console.log({ requestData })
-// }
 
 </script>
 

@@ -25,9 +25,13 @@
     "vite": "^4.1.1"
   },
   "dependencies": {
+    "@avanda/avandajs": "^0.2.5",
+    "@vueuse/core": "^11.1.0",
     "click-outside-vue3": "^4.0.1",
     "fs": "^0.0.1-security",
     "vue": "^3.2.47",
+    "vue-json-pretty": "^2.4.0",
+    "vue-modally-v3": "^0.0.16",
     "vue-resizer": "^1.1.9",
     "vue-router": "^4.2.4"
   }

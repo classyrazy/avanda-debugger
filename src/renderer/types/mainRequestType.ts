@@ -1,45 +1,64 @@
-import requestType from "./requestType"
-import { nestedFunctionType } from "./nestedFunctionType"
-type mainRequestType = {
-    project_id: string,
-    id: string,
-    params: {
-        key: string,
-        value: string,
-        description: string,
-        active: boolean,
-    }[],
-    headers: {
-        key: string,
-        value: string,
-        description: string,
-        active: boolean 
-    }[],
-    body: {
-        key: string,
-        value: string | File,
-        description: string,
-        active: boolean,
-        file: boolean,
-        fileName?: string
-    }[],
-    authorisation:{
-        type: string,
-    },
-    columns:{key: string, active: boolean}[],
-    requestData: {
-        type: requestType
-        name: string,
-        serviceName: string,
-    },
-    responseData:{
-        type: string,
-        data: any,
-        loading:boolean 
-    },
-    nestedFunction: nestedFunctionType[] | null
+import requestType from "./requestType";
+import { nestedFunctionType } from "./nestedFunctionType";
+
+export interface Param {
+    key: string;
+    value: string;
+    description: string;
+    active: boolean;
 }
 
-export{
-    mainRequestType
+interface Header {
+    key: string;
+    value: string;
+    description: string;
+    active: boolean;
 }
+
+interface Body {
+    key: string;
+    value: string | File;
+    description: string;
+    active: boolean;
+    file: boolean;
+    fileName?: string;
+}
+
+interface Authorisation {
+    type: string;
+}
+
+export interface Column {
+    key: string;
+    active: boolean;
+}
+
+export interface RequestData {
+    type: requestType;
+    name: string;
+    serviceName: string;
+}
+
+interface ResponseData {
+    type: string;
+    data: any;
+    loading: boolean;
+}
+
+type mainRequestType = {
+    project_id: string;
+    id: string;
+    params: Param[];
+    headers: Header[];
+    body: Body[];
+    authorisation: Authorisation;
+    columns: Column[];
+    requestData: RequestData;
+    responseData: ResponseData;
+    nestedFunction: nestedFunctionType[];
+    snippet: string | null;
+};
+
+export {
+    mainRequestType
+};

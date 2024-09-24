@@ -102,4 +102,7 @@ export default {
 .dropdown-main-con:hover .hidden-icon{
     display: inline-block;
 }
+.dropdown-menu{
+    transition: all 0.3s ease-in-out;
+}
 </style>

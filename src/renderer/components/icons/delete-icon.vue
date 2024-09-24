@@ -5,20 +5,3 @@
 
 </template>
 
-<script setup lang="ts">
-interface Props {
-    bgColor?: string;
-    textColor: string;
-    size: number;
-}
-
-let props = withDefaults(defineProps<Props>(), {
-    bgColor: "#ffffff",
-    textColor: "#000",
-    size: 24,
-});
-</script>
-
-<style scoped>
-
-</style>

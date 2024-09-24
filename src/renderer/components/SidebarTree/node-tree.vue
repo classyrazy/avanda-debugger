@@ -2,7 +2,7 @@
     <li class="node-tree">
         <div class="flex gap-2 items-center">
             <toggle-side-open-icon v-if="node.type === 'folder'"
-                @click="handleToggleOpenFolder" class="cursor-pointer inline-block"
+                @click="handleToggleOpenFolder" class="cursor-pointer inline-block w-7 h-7"
                 :class="toggleOpenFolder ? 'rotate-90' : ''"></toggle-side-open-icon>
             <!-- <span class="name" > -->
             <v-tooltip :label="node.name" @label-click="handleNodeClick"

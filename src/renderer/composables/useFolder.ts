@@ -2,8 +2,10 @@ import { computed, reactive, ref } from "vue"
 import { v4 as uuidv4 } from 'uuid'
 import { fileStruct } from "../types/fileStruct"
 import TreeItem from "../types/TreeItem"
+import { useStorage } from "@vueuse/core"
 
-export const allFolders = reactive<TreeItem[]>([])
+// export const allFolders.value = reactive<TreeItem[]>([])
+export const allFolders = useStorage<TreeItem[]>("allFolders.value", [])
 export const folderOptions = reactive([
     {
         label: "New Request"
@@ -45,14 +47,14 @@ export const useFolder = () => {
                 type: "folder"
             }
             if (currentFolderId.value) {
-                const parentFolder = findFolderById(currentFolderId.value, allFolders)
+                const parentFolder = findFolderById(currentFolderId.value, allFolders.value)
                 if (parentFolder) {
                     parentFolder.children?.push(objTopush)
-                    console.log("Creating new sub folder", { allFolders })
+                    console.log("Creating new sub folder", { folders: allFolders.value })
                 }
             } else {
-                allFolders.push(objTopush)
-                console.log("Creating new folder", { allFolders })
+                allFolders.value.push(objTopush)
+                console.log("Creating new folder", { folders: allFolders.value })
             }
             handleUpdateCurrentFolderId(objTopush.id)
         } else {
@@ -65,14 +67,14 @@ export const useFolder = () => {
                 req_type: "get"
             }
             if (currentFolderId.value) {
-                const parentFolder = findFolderById(currentFolderId.value, allFolders)
+                const parentFolder = findFolderById(currentFolderId.value, allFolders.value)
                 if (parentFolder) {
                     parentFolder.children?.push(objTopush)
-                    console.log("Creating new sub request", { allFolders })
+                    console.log("Creating new sub request", {folders: allFolders.value })
                 }
             } else {
-                allFolders.push(objTopush)
-                console.log("Creating new request", { allFolders })
+                allFolders.value.push(objTopush)
+                console.log("Creating new request", { folders: allFolders.value })
             }
         }
         return objTopush
@@ -106,7 +108,7 @@ export const useFolder = () => {
             return folders.join("-->");
         }
         folders.unshift(object.name);
-        const parent = findFolderById(object.parentFolderId, allFolders);
+        const parent = findFolderById(object.parentFolderId, allFolders.value);
         // console.log({ parent })
         generatePath(parent, folders);
         // console.log(folders)
@@ -114,7 +116,7 @@ export const useFolder = () => {
     }
     const computedCurrentFolder = computed(() => {
         if (!currentFolderId.value) return "Root"
-        const foundFolder = findFolderById(currentFolderId.value, allFolders)
+        const foundFolder = findFolderById(currentFolderId.value, allFolders.value)
         return foundFolder as TreeItem | 'Root'
     })
     function handleUpdateCurrentFolderId(id: string) {

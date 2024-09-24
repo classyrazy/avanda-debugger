@@ -1,0 +1,1 @@
+declare module 'vue-modally-v3';
