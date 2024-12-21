@@ -26,13 +26,17 @@
   },
   "dependencies": {
     "@avanda/avandajs": "^0.2.5",
+    "@headlessui/vue": "^1.7.23",
     "@vueuse/core": "^11.1.0",
     "click-outside-vue3": "^4.0.1",
     "fs": "^0.0.1-security",
+    "monaco-editor-vue3": "^0.1.10",
     "vue": "^3.2.47",
+    "vue-json-editor": "^1.4.3",
     "vue-json-pretty": "^2.4.0",
     "vue-modally-v3": "^0.0.16",
     "vue-resizer": "^1.1.9",
-    "vue-router": "^4.2.4"
+    "vue-router": "^4.2.4",
+    "vue3-ts-jsoneditor": "^2.11.2"
   }
 }

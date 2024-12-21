@@ -14,6 +14,7 @@ function createWindow () {
 
   if (process.env.NODE_ENV === 'development') {
     const rendererPort = process.argv[2];
+    console.log(`http://localhost:${rendererPort}`)
     mainWindow.loadURL(`http://localhost:${rendererPort}`);
   }
   else {

@@ -35,6 +35,15 @@ export const projectDetails = ref<ProjectDetailType>(allProjects.value.find(proj
     description: "",
     environs: []
 })
+export const allEnvironValues = computed(() => {
+    // i want it in the form key: value
+    let environs = {} as any
+    for (let env of projectDetails.value.environs) {
+        environs[env.key] = env.value
+    }
+
+    return environs
+})
 
 export const resetConfigInAvanda = () => {
     Graph.setAvandaConfig({
@@ -42,10 +51,7 @@ export const resetConfigInAvanda = () => {
     })
     Graph.setAxiosRequestConfig({
         baseURL: projectDetails.value.baseurl,
-        withCredentials: true,
-        headers: {
-            Authorization: `Bearer ajksklls`,
-        },
+        withCredentials: true
     })
     console.log('baseUrl', projectDetails.value.baseurl)
 }

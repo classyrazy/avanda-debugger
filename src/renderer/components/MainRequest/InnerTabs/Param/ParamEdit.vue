@@ -1,5 +1,5 @@
 <template>
-    <div class="pt-6">
+    <div class="pt-4">
         <h3 class="text-md font-semibold text-avanda-grey-dark mb-3 mx-4 my-2">Query Params</h3>
         <div class="param-table border-t">
             <div class="">

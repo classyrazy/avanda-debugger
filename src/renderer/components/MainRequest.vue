@@ -57,12 +57,16 @@ import ParamEdit from './MainRequest/InnerTabs/Param/ParamEdit.vue'
 import ColumnEdit from './MainRequest/InnerTabs/Column/ColumnEdit.vue'
 import RequestInput from './MainRequest/RequestInput.vue'
 import { DragRow } from "vue-resizer"
-import { computed, ref, watchEffect } from 'vue'
+import { computed, onMounted, ref, watchEffect } from 'vue'
 import { requests,currentRequest } from '../composables/request/useRequest'
 import { currentTab, useRequestTabs,currentTabType,requestTabs } from '../composables/request/useRequestTabs'
 import { requestInnerTabs } from '../types/appStyleTypes'
 import VueJsonPretty from 'vue-json-pretty';
+import JsonEditor from 'vue3-ts-jsoneditor';
 import 'vue-json-pretty/lib/styles.css';
+import BearerEdit from './MainRequest/Authorisation/BearerEdit.vue'
+import BodyEdit from './MainRequest/InnerTabs/Body/BodyEdit.vue'
+import { allEnvironValues } from '../composables/useAppConfig'
 
 
 const { handleUpdateCurrentInnerTab } = useRequestTabs()
@@ -72,16 +76,16 @@ interface innerTabs {
     [key: string]: object
 }
 const innerTabsGet: innerTabs = {
+    'authorization': BearerEdit,
     columns: ColumnEdit,
     'params': ParamEdit,
-    // 'authorization': ParamEdit,
     'nested Function': NestedFunctionEdit
 
 }
 const innerTabsPost: innerTabs = {
+    'authorization': BearerEdit,
     'params': ParamEdit,
-    // 'authorization': ParamEdit,
-    'body': ParamEdit,
+    'body': BodyEdit,
 
 }
 const computedInnerTabs = computed(() => {
@@ -94,6 +98,13 @@ const computedInnerTabs = computed(() => {
 
 const computedTabNames = computed(() => {
     return Object.keys(computedInnerTabs.value) as requestInnerTabs[]
+})
+onMounted(() => {
+    if(allEnvironValues.value['token'].trim() !== '' && currentRequest.value && typeof currentRequest.value?.authorisation.token == 'string') {
+        console.log("testttt")
+        currentRequest.value.authorisation.token = {key: 'token'}
+        console.log('token', currentRequest.value.authorisation.token)
+    }
 })
 </script>
 

@@ -21,6 +21,7 @@
 </template>
 
 <script setup lang="ts">
+import Alert from '../components/core/Alert.vue'
 import DownIcon from '../components/icons/down-icon.vue'
 import TabsTopbar from '../components/TabsTopbar.vue'
 import DebuggerSidebar from '../components/DebuggerSidebar.vue'

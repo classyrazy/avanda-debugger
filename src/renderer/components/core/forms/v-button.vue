@@ -1,7 +1,7 @@
 <template>
     <button :class="__class" class="flex justify-center" style="white-space: nowrap" :disabled="disabled">
         <component v-if="icon || loading" :class="`${!iconOnly ? 'mr-2' : ''} my-auto`" size="17" :color="types[type]"
-            :is="loading ? 'Spinner' : icon"></component>
+            :is="loading ? Spinner : icon"></component>
         <span class="my-auto" :class="!icon && !loading ? (round ? ' mt-1 ml-1 z-50' : 'm-auto') : ''">
             <slot></slot>
         </span>
@@ -10,6 +10,8 @@
 
 <script lang="ts" setup>
 // import Spinner from '../svgs/loader-icon.vue'
+import Spinner from '../loader/loader-icon.vue';
+
 
 
 import { computed } from "@vue/reactivity"

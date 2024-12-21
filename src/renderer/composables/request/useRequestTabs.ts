@@ -67,13 +67,13 @@ export const useRequestTabs = () => {
             handleUpdateCurrentTabId(requestTabs.value[index - 1].id || requestTabs[requestTabs.length - 1].id)
         }
     }
-    function addTabToRequestTabs(name: string, requestId: string,requestType:requestType = "get") {
+    function addTabToRequestTabs(name: string, requestId: string,requestType:requestType = "get", req_tab_model: requestInnerTabs = "params") {
         let reqHeaderObj: RequestTabType
         reqHeaderObj = {
             type: requestType,
             name,
             id: requestId,
-            current_req_tab_model: "params"
+            current_req_tab_model: req_tab_model
         }
         const index = newRequestsTabs.findIndex(tab => tab.id === requestId)
         if (index !== -1) return
@@ -84,12 +84,18 @@ export const useRequestTabs = () => {
         const index = requestTabs.value.findIndex(tab => tab.id === currentRequestId.value)
         if (index === -1) return
         requestTabs.value[index].current_req_tab_model = tab
+        console.log({ tab : requestTabs.value[index]})
     }
     function handleUpdateTabHeaderRequestType(reqId: string,type: requestType) {
         console.log({reqId,type})
         const index = requestTabs.value.findIndex(tab => tab.id === reqId)
         if (index === -1) return
         requestTabs.value[index].type = type
+    }
+    function renameTab(reqId: string, name: string) {
+        const index = requestTabs.value.findIndex(tab => tab.id === reqId)
+        if (index === -1) return
+        requestTabs.value[index].name = name
     }
 
     return {
@@ -98,6 +104,7 @@ export const useRequestTabs = () => {
         removeTabFromTabs,
         addTabToRequestTabs,
         handleUpdateCurrentInnerTab,
-        handleUpdateTabHeaderRequestType
+        handleUpdateTabHeaderRequestType,
+        renameTab
     }
 }

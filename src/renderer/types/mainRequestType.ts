@@ -15,17 +15,18 @@ interface Header {
     active: boolean;
 }
 
-interface Body {
+export interface Body {
     key: string;
     value: string | File;
-    description: string;
     active: boolean;
-    file: boolean;
+    file?: boolean;
     fileName?: string;
 }
 
 interface Authorisation {
     type: string;
+    token: string | { key: string};
+    isVariable?: boolean;
 }
 
 export interface Column {
@@ -51,6 +52,15 @@ type mainRequestType = {
     params: Param[];
     headers: Header[];
     body: Body[];
+    post: {
+        bodyType: {
+            name: string;
+            value: string;
+        };
+        jsonData: {
+            text: ""
+        };
+    }
     authorisation: Authorisation;
     columns: Column[];
     requestData: RequestData;

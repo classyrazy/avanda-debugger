@@ -14,5 +14,11 @@ Graph.setAvandaConfig({
   })
 console.log('baseUrl', baseUrl)
 
-
+export const setBearerToken = (token: string) => {
+  Graph.setAxiosRequestConfig({
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  })
+}
 export default Graph; 

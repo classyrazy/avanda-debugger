@@ -34,7 +34,8 @@
             <v-button type="bordered_black" size="small">
                 <CodeIcon />
             </v-button>
-            <v-button type="pry" class="w-auto px-6" size="small"
+            {{ currentRequest?.responseData.loading }}
+            <v-button type="pry" class="w-auto px-6" size="small" :loading="currentRequest?.responseData.loading"
                 @click="handleCallService(currentRequest)">Send</v-button>
         </div>
     </div>

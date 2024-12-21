@@ -1,7 +1,7 @@
 import { Ref, computed, onMounted, reactive, ref } from "vue"
 import { mainRequestType } from "../../types/mainRequestType"
-import { useFolder } from "../useFolder"
-import { useRequestTabs, newRequestsTabs, currentTab } from "./useRequestTabs"
+import { allFolders, useFolder } from "../useFolder"
+import { useRequestTabs, newRequestsTabs, currentTab, requestTabs } from "./useRequestTabs"
 import { useRoute, useRouter } from "vue-router"
 import requestType from "../../types/requestType"
 import { useStorage } from "@vueuse/core"
@@ -38,7 +38,7 @@ export const currentRequest = computed(() => {
     return requests.value.find(req => req.id === currentRequestId.value) || null
 })
 export const useRequest = () => {
-    const { createNewFolder } = useFolder()
+    const { createNewFolder, deleteNodeById, updateRequestTypeInfolder } = useFolder()
     const { addTabToRequestTabs, removeTabFromTabs,handleUpdateTabHeaderRequestType,handleUpdateCurrentInnerTab } = useRequestTabs()
     const router = useRouter()
     const currentRequestTest = ref<mainRequestType |null>(null)
@@ -63,17 +63,27 @@ export const useRequest = () => {
             body: [{
                 key: "",
                 value: "",
-                description: "",
                 active: true,
                 file: false
             }],
             authorisation: {
-                type: "bearer"
+                type: "bearer",
+                token: "",
+                isVariable: false
             },
             requestData: {
                 type: "get",
                 name: name,
                 serviceName: "",
+            },
+            post:{
+                bodyType: {
+                    name: "Key-Value",
+                    value: "key-value"
+                },
+                jsonData: {
+                    text: ""
+                }
             },
             responseData: {
                 type: "json",
@@ -88,21 +98,11 @@ export const useRequest = () => {
         requests.value.push(reqToPush)
         router.push({ query: { t: reqCreated.id } })
     }
-    
-    function createNewColumn(reqId: string) {
-        if(!reqId) return
-        const req = requests.value.find(req => req.id === reqId)
-        if (req) {
-            req.columns.push({ key: "", active: true })
-        }
-        console.log({reqId} ,"creating new column", req)
-    }
-    function createNewParam(reqId: string) {
-        if(!reqId) return
-        const req = requests.value.find(req => req.id === reqId)
-        if (req) {
-            req.params.push({ key: "", value: "", description: "", active: true })
-        }
+    function createExistingRequest(name: string, req: mainRequestType) {
+        console.log("create from existing",{req})
+        addTabToRequestTabs(name, req.id)
+        requests.value.push(req)
+        router.push({ query: { t: req.id } })
     }
     function updateRequestType(reqId: string, type: requestType) {
         const req = requests.value.find(req => req.id === reqId)
@@ -115,12 +115,39 @@ export const useRequest = () => {
             req.requestData.type = type
         }
         handleUpdateTabHeaderRequestType(reqId,type)
+        updateRequestTypeInfolder(reqId, type)
+    }
+
+    function deleteRequest(reqId: string) {
+        console.log({reqId})
+        const index = requests.value.findIndex(req => req.id === reqId)
+        const requestInTabs = requestTabs.value.findIndex(tab => tab.id === reqId)
+        requests.value.splice(index, 1)
+        if (requestInTabs !== -1) {
+            removeTabFromTabs(reqId, 'old')
+        }
+        deleteNodeById(reqId)
+        
+        if (requests.value.length === 0) {
+            currentRequestId.value = ""
+            return
+        }
+        currentRequestId.value = requests.value[index - 1].id || requests.value[requests.value.length - 1].id
+    }
+    function renameRequest(reqId: string, name: string) {
+        const req = requests.value.find(req => req.id === reqId)
+        if (req) {
+            req.requestData.name = name
+        }
     }
 
 
     return {
         createNewRequest,
         currentRequestTest,
-        updateRequestType
+        updateRequestType,
+        deleteRequest,
+        renameRequest,
+        createExistingRequest
     }
 }
